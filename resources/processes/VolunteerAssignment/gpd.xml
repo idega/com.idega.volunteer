@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="VolunteerAssignment" width="1119" height="725">
+  <node name="submitNewVolunteerAssignment" x="328" y="-144" width="203" height="32">
+    <edge>
+      <label x="-16" y="-9"/>
+    </edge>
+  </node>
+  <node name="sendHandlerNewCaseArrivedMessage" x="422" y="201" width="201" height="36">
+    <edge>
+      <label x="-25" y="-15"/>
+    </edge>
+  </node>
+  <node name="additionalInformationEnd" x="516" y="460" width="21" height="26"/>
+  <node name="end" x="970" y="176" width="24" height="25"/>
+  <node name="emailsFetcherEnd" x="755" y="65" width="23" height="23"/>
+  <node name="informAssignedVolunteerOrganizationEnd" x="52" y="388" width="223" height="36"/>
+  <node name="informFork" x="511" y="304" width="24" height="21">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="-104" y="-12"/>
+    </edge>
+  </node>
+  <node name="endCaseProcess" x="767" y="111" width="140" height="40">
+    <edge>
+      <label x="-30" y="-10"/>
+    </edge>
+  </node>
+  <node name="endProcess" x="927" y="109" width="140" height="40">
+    <edge>
+      <label x="-31" y="-9"/>
+    </edge>
+  </node>
+  <node name="emailsFetcher" x="701" y="-49" width="132" height="36">
+    <edge>
+      <label x="-17" y="-11"/>
+    </edge>
+  </node>
+  <node name="fork3" x="415" y="-89" width="25" height="24">
+    <edge>
+      <label x="-40" y="-18"/>
+      <bendpoint w1="340" h1="-1" w2="0" h2="-47"/>
+    </edge>
+    <edge>
+      <label x="-78" y="-14"/>
+    </edge>
+  </node>
+  <node name="completeProcess" x="586" y="106" width="149" height="46">
+    <edge>
+      <label x="-43" y="-9"/>
+    </edge>
+  </node>
+  <node name="handlerAssignsOwner" x="55" y="-96" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="anonymousOwnerAssignment" x="35" y="90" width="162" height="36">
+    <edge>
+      <label x="-89" y="-9"/>
+    </edge>
+  </node>
+  <node name="ifHandlerAssigned" x="53" y="4" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="-98" y="-16"/>
+      <bendpoint w1="405" h1="1" w2="2" h2="-196"/>
+    </edge>
+  </node>
+  <node name="sendOwnerCaseCreatedMessage" x="17" y="202" width="199" height="36">
+    <edge>
+      <label x="-111" y="-18"/>
+    </edge>
+  </node>
+  <node name="informVolunteers" x="456" y="381" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="informAssignedVolunteerOrganization" x="69" y="301" width="196" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="editVolunteerAssignment" x="812" y="281" width="161" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="editFork" x="727" y="205" width="23" height="24">
+    <edge>
+      <label x="-70" y="-16"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="-56" y="-14"/>
+    </edge>
+  </node>
+</root-container>

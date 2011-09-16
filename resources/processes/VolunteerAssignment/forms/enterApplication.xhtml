@@ -1,0 +1,855 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ev="http://www.w3.org/2001/xml-events"
+    xmlns:idega="http://idega.com/xforms"
+    xmlns:xf="http://www.w3.org/2002/xforms"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <head>
+        <title>
+            <xf:output model="data_model" ref="instance('localized_strings')/form-title[@lang=instance('localized_strings')/current_language]"/>
+        </title>
+        <xf:model id="submission_model" schema="#fb-schema">
+            <xf:instance id="data-instance" xmlns="">
+                <data>
+                    <form_id>22</form_id>
+                    
+                    <saveFormData>
+                        <submissionId/>
+                    </saveFormData>
+                    
+                    <Uppdragsnamn_fbc_50 mapping="string_caseDescription"/>
+                    <Uppdragsgivare_fbc_51 mapping="string_volunteerAssignmentCreator"/>
+                    <Uppdragsomrde_fbc_52 mapping="string_volunteerAssignmentArea"/>
+                    <Datum_fbc_57 xsi:nil="true" mapping="date_volunteerAssignmentDate"/>
+                    <Publiceringsdatum_fbc_58 mapping="date_volunteerAssignmentCreationDate"/>
+                    <Slutdatum_fbc_60 xsi:nil="true" mapping="date_volunteerAssignmentExpireDate"/>
+                    <Tidstgng_fbc_61 mapping="string_volunteerAssignmentTime"/>
+                    <Namn_fbc_65 mapping="string_volunteerAssignmentContactName"/>
+                    <Telefonnummer_1_fbc_67 mapping="string_volunteerAssignmentContactPhone1"/>
+                    <Telefonnummer_2_fbc_68 mapping="string_volunteerAssignmentContactPhone2"/>
+                    <Epost_fbc_69 mapping="string_volunteerAssignmentContactEmail"/>
+                    <Antal_frivilliga_fbc_73 mapping="string_volunteerAssignmentNumberOfVolunteers"/>
+                    <Utfrandetid_fbc_74 mapping="string_volunteerAssignmentExpectedExecutionTime"/>
+                    <Beskrivning_av_uppdrag_fbc_79 mapping="string_volunteerAssignmentDescription"/>
+                    <Uppdragstyp_fbc_80 mapping="list_volunteerAssignmentType"/>
+                    <Frivillig_fbc_81 mapping="list_volunteerAssignmentVolunteers"/>
+                    <Frivilligfrslag_fbc_82 mapping="list_volunteerAssignmentProposedVolunteers"/>
+                    <Registrerad_fbc_83 mapping="list_volunteerAssignmentRegistered"/>
+                </data>
+            </xf:instance>
+            <xf:instance id="control-instance">
+                <control xmlns="">
+                    <required>true</required>
+                    <readonly>false</readonly>
+                    <submission>false</submission>
+                    <generatePdf>false</generatePdf>
+                    <sendLinkSubmission>false</sendLinkSubmission>
+                    <submissionButton/>
+                </control>
+            </xf:instance>
+            <xf:instance id="error-instance" xmlns="">
+                <data>
+                    <error for=""/>
+                    <sendLinkError for=""/>
+                </data>
+            </xf:instance>
+            <xf:instance id="saveForm-instance">
+                <data xmlns="">
+                    <sendLinkEmail xsi:nil="true"/>
+                    <link/>
+                    <savePhase>false</savePhase>
+                </data>
+            </xf:instance>
+            <xf:instance id="downloadFormAsPDF-instance">
+                <data xmlns="">
+                    <link/>
+                </data>
+            </xf:instance>
+            <xf:bind id="errorsGroup" idega:shared="true"
+                nodeset="instance('error-instance')/error" relevant="instance('control-instance')/submission = 'true' and count-non-empty(instance('error-instance')/error)!=0"/>
+            <xf:bind id="errors" idega:shared="true" nodeset="instance('error-instance')/error[. != '']"/>
+            <xf:bind id="bind-submissionButton" idega:shared="true"
+                nodeset="instance('control-instance')/submissionButton" relevant="instance('control-instance')/readonly != 'true' and instance('control-instance')/generatePdf != 'true'"/>
+            <xf:bind id="fbc_48_bind"
+                nodeset="instance('saveForm-instance')/sendLinkEmail"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="true() and instance('control-instance')/generatePdf != 'true'" type="fbc_47fb_email"/>
+            <xf:submission action="xformsBPM:/nouri" id="submit_data_submission"	method="post" replace="none" >
+                     <idega:toggle case="fbc_4" ev:event="xforms-submit-done"/>
+            </xf:submission>
+            <xf:action ev:event="xforms-submit-error" id="submission-error">
+                <xf:dispatch name="idega-submit-error" target="idega-submission-error"/>
+            </xf:action>
+            <xf:action ev:event="idega-submit-error" id="idega-submission-error">
+                <xf:message level="modeless" ref="instance('localized_strings')/submission-error_message[@lang=instance('localized_strings')/current_language]"/>
+            </xf:action>
+            <xf:bind id="fbc_50_bind" nodeset="Uppdragsnamn_fbc_50"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="instance('control-instance')/required = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_51_bind" nodeset="Uppdragsgivare_fbc_51"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="instance('control-instance')/required = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_52_bind" nodeset="Uppdragsomrde_fbc_52"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="instance('control-instance')/required = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_57_bind" nodeset="Datum_fbc_57" type="date"/>
+            <xf:bind id="fbc_58_bind" nodeset="Publiceringsdatum_fbc_58"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="instance('control-instance')/required = 'true'" type="date"/>
+            <xf:bind id="fbc_60_bind" nodeset="Slutdatum_fbc_60"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="instance('control-instance')/required = 'true'" type="date"/>
+            <xf:bind id="fbc_61_bind" nodeset="Tidstgng_fbc_61"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="instance('control-instance')/required = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_65_bind" nodeset="Namn_fbc_65"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="instance('control-instance')/required = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_67_bind" nodeset="Telefonnummer_1_fbc_67"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="instance('control-instance')/required = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_51_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.name"/>
+            <xf:instance id="fbc_65_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.name"/>
+            <xf:instance id="fbc_67_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:bind id="fbc_68_bind" nodeset="Telefonnummer_2_fbc_68"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_68_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.phones.number"/>
+            <xf:bind id="fbc_69_bind" nodeset="Epost_fbc_69"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="instance('control-instance')/required = 'true'" type="xs:string"/>
+            <xf:instance id="fbc_69_autofill-instance"
+                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.emails.emailAddress"/>
+            <xf:bind id="fbc_73_bind" nodeset="Antal_frivilliga_fbc_73"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="instance('control-instance')/required = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_74_bind" nodeset="Utfrandetid_fbc_74"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_79_bind"
+                nodeset="Beskrivning_av_uppdrag_fbc_79"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_80_bind" nodeset="Uppdragstyp_fbc_80" readonly="instance('control-instance')/readonly = 'true'" required="instance('control-instance')/required = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_81_bind" nodeset="Frivillig_fbc_81"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_82_bind" nodeset="Frivilligfrslag_fbc_82"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_83_bind" nodeset="Registrerad_fbc_83"
+                readonly="instance('control-instance')/readonly = 'true'"
+                required="instance('control-instance')/required = 'true'" type="xs:string"/>
+        </xf:model>
+        <xf:model id="data_model">
+            <xf:instance id="localized_strings" xmlns="">
+                <localized_strings>
+                    <default_language>sv_SE</default_language>
+                    <current_language>en</current_language>
+                    
+                    <form-title lang="sv_SE">Hantera/registrera uppdrag</form-title>
+                    <form-title lang="en">Volunteer assignment</form-title>
+                    <form-title lang="is_IS">Volunteer verkefni</form-title>
+
+                    <page-2-label lang="sv_SE">Lämnas in</page-2-label>                    
+                    <page-2-label lang="en">Form submitted</page-2-label>
+                    <page-2-label lang="is_IS">Form sent</page-2-label>
+                    
+                    <submission-error_message lang="sv_SE">Inlämning fel. Kontrollera din form!</submission-error_message>
+                    <submission-error_message lang="en">Submission error. Please check your form!</submission-error_message>
+                    <submission-error_message lang="is_IS">Villa varð við að senda formið vinsamlegast athugið hvort stjörnumerktir reitir hafi allir verið útfylltir og að engar villur séu í forminu.</submission-error_message>
+                    
+                    <submission-success_message lang="sv_SE">Formuläret har mottagits. Tack.</submission-success_message>
+                    <submission-success_message lang="en">Your form has been received. Thank you.</submission-success_message>
+                    <submission-success_message lang="is_IS">Formið hefur verið móttekið. Takk fyrir.</submission-success_message>
+                    
+                    <save-success_message lang="sv_SE">Formen var räddad</save-success_message>
+                    <save-success_message lang="en">The form was saved</save-success_message>
+                    <save-success_message lang="is_IS">Umsóknin var vistuð og þú getur nálgast hana aftur með hlekknum hér að neðan</save-success_message>
+                    
+                    <save-success_label lang="sv_SE">Sparade</save-success_label>
+                    <save-success_label lang="en">Saved</save-success_label>
+                    <save-success_label lang="is_IS">Vistað</save-success_label>
+                    
+                    <save-pdf-label lang="sv_SE">Hämta som PDF</save-pdf-label>
+                    <save-pdf-label lang="is_IS">Sækja sem PDF</save-pdf-label>
+                    <save-pdf-label lang="en">Get as PDF</save-pdf-label>
+                    
+                    <save-form-link-label lang="sv_SE">Behåll denna länk för att kunna senare fortsätta med programmet. Du kan också registrera din e-postadress och klicka på "Skicka" för att skicka en länk via e-post.</save-form-link-label>
+                    <save-form-link-label lang="is_IS">Geymdu þennan hlekk til að geta haldið síðar áfram með umsóknina. Þú getur einnig skráð inn netfangið þitt og smellt á "Senda" til að senda þér hlekkinn í tölvupósti.</save-form-link-label>
+                    <save-form-link-label lang="en">Link</save-form-link-label>
+                    
+                    <fbc_48-title lang="sv_SE">Epost</fbc_48-title>
+                    <fbc_48-title lang="is_IS">Netfang</fbc_48-title>
+                    <fbc_48-title lang="en">Email</fbc_48-title>
+                    <fbc_48-required lang="is_IS">Netfang þarf að vera útfyllt</fbc_48-required>
+                    <fbc_48-required lang="en">Email address can not be empty</fbc_48-required>
+                    <fbc_48-required lang="sv_SE">E-postadressen kan inte vara tom</fbc_48-required>
+                    <fbc_48-validation lang="is_IS">Netfang stenst ekki prófun</fbc_48-validation>
+                    <fbc_48-validation lang="en">Invalid email</fbc_48-validation>
+                    <fbc_48-validation lang="sv_SE">Ogiltig e-post</fbc_48-validation>
+                    
+                    <send-label lang="sv_SE">Skicka</send-label>
+                    <send-label lang="en">Send</send-label>
+                    <send-label lang="is_IS">Senda hlekk</send-label>
+                    
+                    <back-label lang="sv_SE">Tillbaka</back-label>
+                    <back-label lang="en">Back</back-label>
+                    <back-label lang="is_IS">Til baka</back-label>
+                    
+                    <fbc_49-text lang="is_IS">Description of the assignment</fbc_49-text>
+                    <fbc_49-text lang="en">Description of the assignment</fbc_49-text>
+                    <fbc_49-text lang="sv_SE">Beskrivning av uppdraget</fbc_49-text>
+                    
+                    <fbc_50-label lang="is_IS">Volunteer assignment name</fbc_50-label>
+                    <fbc_50-label lang="en">Volunteer assignment name</fbc_50-label>
+                    <fbc_50-label lang="sv_SE">Uppdragsnamn</fbc_50-label>
+                    <fbc_50-required lang="is_IS">The name for a volunteer assignment is required</fbc_50-required>
+                    <fbc_50-required lang="en">The name for a volunteer assignment is required</fbc_50-required>
+                    <fbc_50-required lang="sv_SE">Detta fält måste fyllas i</fbc_50-required>
+                    <fbc_50-help lang="sv_SE">Kort förklarande namn på uppdraget</fbc_50-help>
+                    <fbc_50-help lang="en">Short description about the assignment</fbc_50-help>
+                    <fbc_50-help lang="is_IS">Short description about the assignment</fbc_50-help>
+
+                    <fbc_51-label lang="is_IS">Assigner</fbc_51-label>
+                    <fbc_51-label lang="en">Assigner</fbc_51-label>
+                    <fbc_51-label lang="sv_SE">Uppdragsgivare</fbc_51-label>
+                    <fbc_51-required lang="is_IS">The name of assigner must be provided</fbc_51-required>
+                    <fbc_51-required lang="en">The name of assigner must be provided</fbc_51-required>
+                    <fbc_51-required lang="sv_SE">Detta fält måste fyllas i</fbc_51-required>
+
+                    <fbc_52-label lang="is_IS">Assignment area</fbc_52-label>
+                    <fbc_52-label lang="en">Assignment area</fbc_52-label>
+                    <fbc_52-label lang="sv_SE">Uppdragsområde</fbc_52-label>
+                    <fbc_52-help lang="sv_SE">Geografiskt område där uppdraget ska genomföras</fbc_52-help>
+                    <fbc_52-help lang="is_IS">Geographical area in which the assignment must be implemented</fbc_52-help>
+                    <fbc_52-help lang="en">Geographical area in which the assignment must be implemented</fbc_52-help>
+                    <fbc_52-required lang="is_IS">The area of an assignment must be provided</fbc_52-required>
+                    <fbc_52-required lang="en">The area of an assignment must be provided</fbc_52-required>
+                    <fbc_52-required lang="sv_SE">Detta fält måste fyllas i</fbc_52-required>
+
+                    <fbc_54-required lang="is_IS">Það þarf að fylla út reitinn X</fbc_54-required>
+                    <fbc_54-required lang="en">The field X is required</fbc_54-required>
+                    <fbc_55-label lang="is_IS">Vista og geyma</fbc_55-label>
+                    <fbc_55-label lang="en">Save</fbc_55-label>
+                    <fbc_55-label lang="sv_SE">Spara</fbc_55-label>
+                    <fbc_56-required lang="is_IS">Það þarf að fylla út reitinn X</fbc_56-required>
+                    <fbc_56-required lang="en">The field X is required</fbc_56-required>
+                    
+                    <fbc_57-label lang="is_IS">Date</fbc_57-label>
+                    <fbc_57-label lang="en">Date</fbc_57-label>
+                    <fbc_57-label lang="sv_SE">Datum</fbc_57-label>
+                    <fbc_57-help lang="sv_SE">Datum för utförande</fbc_57-help>
+                    <fbc_57-help lang="is_IS">Date of the assignment</fbc_57-help>
+                    <fbc_57-help lang="en">Date of the assignment</fbc_57-help>
+                    
+                    <fbc_58-label lang="is_IS">Creation date</fbc_58-label>
+                    <fbc_58-label lang="en">Creation date</fbc_58-label>
+                    <fbc_58-label lang="sv_SE">Publiceringsdatum</fbc_58-label>
+                    <fbc_58-required lang="is_IS">The creation date of an assignment must be provided</fbc_58-required>
+                    <fbc_58-required lang="en">The creation date of an assignment must be provided</fbc_58-required>
+                    <fbc_58-required lang="sv_SE">Detta fält måste fyllas i</fbc_58-required>
+                    
+                    <fbc_60-label lang="is_IS">Assignment end date</fbc_60-label>
+                    <fbc_60-label lang="en">Assignment end date</fbc_60-label>
+                    <fbc_60-label lang="sv_SE">Slutdatum</fbc_60-label>
+                    <fbc_60-help lang="sv_SE">Datum när uppdraget inte längre visas</fbc_60-help>
+                    <fbc_60-help lang="en">Date when the assignment expires</fbc_60-help>
+                    <fbc_60-help lang="is_IS">Date when the assignment expires</fbc_60-help>
+                    <fbc_60-required lang="is_IS">The expire date of the assignment must be provided</fbc_60-required>
+                    <fbc_60-required lang="en">The expire date of the assignment must be provided</fbc_60-required>
+                    <fbc_60-required lang="sv_SE">Detta fält måste fyllas i</fbc_60-required>
+                    
+                    <fbc_61-label lang="is_IS">Time</fbc_61-label>
+                    <fbc_61-label lang="en">Time</fbc_61-label>
+                    <fbc_61-label lang="sv_SE">Tidsåtgång</fbc_61-label>
+                    <fbc_61-required lang="is_IS">Time must be provided for the assignment</fbc_61-required>
+                    <fbc_61-required lang="en">Time must be provided for the assignment</fbc_61-required>
+                    <fbc_61-required lang="sv_SE">Detta fält måste fyllas i</fbc_61-required>
+                    
+                    <fbc_63-text lang="is_IS">Contact information</fbc_63-text>
+                    <fbc_63-text lang="en">Contact information</fbc_63-text>
+                    <fbc_63-text lang="sv_SE">Uppdragets kontaktperson</fbc_63-text>
+                    
+                    <fbc_65-label lang="is_IS">Name</fbc_65-label>
+                    <fbc_65-label lang="en">Name</fbc_65-label>
+                    <fbc_65-label lang="sv_SE">Namn</fbc_65-label>
+                    <fbc_65-required lang="is_IS">The name must be provided</fbc_65-required>
+                    <fbc_65-required lang="en">The name must be provided</fbc_65-required>
+                    <fbc_65-required lang="sv_SE">Detta fält måste fyllas i</fbc_65-required>
+                    
+                    <fbc_67-label lang="is_IS">Símar 1</fbc_67-label>
+                    <fbc_67-label lang="en">Phone number 1</fbc_67-label>
+                    <fbc_67-label lang="sv_SE">Telefonnummer 1</fbc_67-label>
+                    <fbc_67-required lang="is_IS">The phone number 1 must be provided</fbc_67-required>
+                    <fbc_67-required lang="en">The phone number 1 must be provided</fbc_67-required>
+                    <fbc_67-required lang="sv_SE">Detta fält måste fyllas i</fbc_67-required>
+                    
+                    <fbc_68-label lang="is_IS">Símar 2</fbc_68-label>
+                    <fbc_68-label lang="en">Phone numner 2</fbc_68-label>
+                    <fbc_68-label lang="sv_SE">Telefonnummer 2</fbc_68-label>
+                    
+                    <fbc_69-label lang="is_IS">Netföng</fbc_69-label>
+                    <fbc_69-label lang="en">Email</fbc_69-label>
+                    <fbc_69-label lang="sv_SE">E-post</fbc_69-label>
+                    <fbc_69-required lang="is_IS">The email must be provided</fbc_69-required>
+                    <fbc_69-required lang="en">The email must be provided</fbc_69-required>
+                    <fbc_69-required lang="sv_SE">Detta fält måste fyllas i</fbc_69-required>
+                    
+                    <fbc_72-required lang="is_IS">Það þarf að fylla út reitinn X</fbc_72-required>
+                    <fbc_72-required lang="en">The field X is required</fbc_72-required>
+                    <fbc_72-required lang="sv_SE">Detta fält måste fyllas i</fbc_72-required>
+                    
+                    <fbc_73-label lang="is_IS">Number of volunteers</fbc_73-label>
+                    <fbc_73-label lang="en">Number of volunteers</fbc_73-label>
+                    <fbc_73-label lang="sv_SE">Antal frivilliga</fbc_73-label>
+                    <fbc_73-help lang="is_IS">Number of volunteers needed for the assignment</fbc_73-help>
+                    <fbc_73-help lang="en">Number of volunteers needed for the assignment</fbc_73-help>
+                    <fbc_73-help lang="sv_SE">Antal som behövs till uppdraget</fbc_73-help>
+                    <fbc_73-required lang="is_IS">The number of volunteers must be provided</fbc_73-required>
+                    <fbc_73-required lang="en">The number of volunteers must be provided</fbc_73-required>
+                    <fbc_73-required lang="sv_SE">Detta fält måste fyllas i</fbc_73-required>
+                    
+                    <fbc_74-label lang="is_IS">Time to complete the assignment</fbc_74-label>
+                    <fbc_74-label lang="en">Time to complete the assignment</fbc_74-label>
+                    <fbc_74-label lang="sv_SE">Utförandetid</fbc_74-label>
+                    <fbc_74-help lang="sv_SE">Tid på dygnet då uppdraget förväntas utföras</fbc_74-help>
+                    <fbc_74-help lang="en">Time (number of days) the mission is expected to be performed</fbc_74-help>
+                    <fbc_74-help lang="is_IS">Time (number of days) the mission is expected to be performed</fbc_74-help>
+                    
+                    <fbc_75-text lang="is_IS">Conditions for assignment</fbc_75-text>
+                    <fbc_75-text lang="en">Conditions for assignment</fbc_75-text>
+                    <fbc_75-text lang="sv_SE">Förutsättningar för uppdraget</fbc_75-text>
+                    
+                    <fbc_76-required lang="is_IS">Það þarf að fylla út reitinn X</fbc_76-required>
+                    <fbc_76-required lang="en">The field X is required</fbc_76-required>
+                    <fbc_76-required lang="sv_SE">Detta fält måste fyllas i</fbc_76-required>
+                    
+                    <fbc_77-label lang="is_IS">Senda</fbc_77-label>
+                    <fbc_77-label lang="en">Submit</fbc_77-label>
+                    <fbc_77-label lang="sv_SE">Skicka</fbc_77-label>
+                    
+                    <fbc_78-pdf-label lang="is_IS">Sækja sem PDF</fbc_78-pdf-label>
+                    <fbc_78-pdf-label lang="en">Get as PDF</fbc_78-pdf-label>
+                    <fbc_78-pdf-label lang="sv_SE">Skapa PDF</fbc_78-pdf-label>
+                    
+                    <fbc_79-label lang="is_IS">Description</fbc_79-label>
+                    <fbc_79-label lang="en">Description</fbc_79-label>
+                    <fbc_79-label lang="sv_SE">Beskrivning av uppdrag</fbc_79-label>
+                    <fbc_79-required lang="is_IS">The description must be provided</fbc_79-required>
+                    <fbc_79-required lang="en">The description must be provided</fbc_79-required>
+                    <fbc_79-required lang="sv_SE">Beskrivningen måste tillhandahållas</fbc_79-required>
+                    
+                    <fbc_80-label lang="is_IS">Assignment type(s)</fbc_80-label>
+                    <fbc_80-label lang="en">Assignment type(s)</fbc_80-label>
+                    <fbc_80-label lang="sv_SE">Uppdragstyp</fbc_80-label>
+                    <fbc_80-required lang="is_IS">At least one type must be selected</fbc_80-required>
+                    <fbc_80-required lang="en">At least one type must be selected</fbc_80-required>
+                    <fbc_80-required lang="sv_SE">Detta fält måste fyllas i</fbc_80-required>
+                    
+                    <fbc_81-label lang="is_IS">Volunteers</fbc_81-label>
+                    <fbc_81-label lang="en">Volunteers</fbc_81-label>
+                    <fbc_81-label lang="sv_SE">Frivillig</fbc_81-label>
+                    <fbc_81-help lang="sv_SE">Utförare</fbc_81-help>
+                    <fbc_81-help lang="en">Assigned volunteers</fbc_81-help>
+                    <fbc_81-help lang="is_IS">Assigned volunteers</fbc_81-help>
+                    
+                    <fbc_82-label lang="is_IS">Proposed volunteers</fbc_82-label>
+                    <fbc_82-label lang="en">Proposed volunteers</fbc_82-label>
+                    <fbc_82-label lang="sv_SE">Frivilligförslag</fbc_82-label>
+                    <fbc_82-help lang="is_IS">Possible volunteers</fbc_82-help>
+                    <fbc_82-help lang="en">Possible volunteers</fbc_82-help>
+                    <fbc_82-help lang="sv_SE">Möjliga kandidater</fbc_82-help>
+                    
+                    <fbc_83-label lang="is_IS">Registered</fbc_83-label>
+                    <fbc_83-label lang="en">Registered</fbc_83-label>
+                    <fbc_83-label lang="sv_SE">Registrerad</fbc_83-label>
+                    <fbc_83-required lang="is_IS">The field 'Registered' must be filled</fbc_83-required>
+                    <fbc_83-required lang="en">The field 'Registered' must be filled</fbc_83-required>
+                    <fbc_83-required lang="sv_SE">Detta fält måste fyllas i</fbc_83-required>
+                    <fbc_83-help lang="sv_SE">Sätts till Nej vid avregistrering av uppdrag</fbc_83-help>
+                    <fbc_83-help lang="en">Setting to 'No' will de-register the volunteers</fbc_83-help>
+                    <fbc_83-help lang="is_IS">Setting to 'Nei' will de-register the volunteers</fbc_83-help>
+                </localized_strings>
+            </xf:instance>
+            <xf:instance id="locale-instance" relevant="false()" src="context:fb-afk-loginSession.currentLocale"/>
+            <xf:action ev:event="xforms-ready">
+                <idega:dispatch name="idega-xforms-ready" target="//h:body//*[starts-with(@id, 'fbc_')]"/>
+                <xf:setvalue model="data_model"
+                    ref="instance('localized_strings')/current_language" value="instance('locale-instance')/fb-afk-loginSession.currentLocale"/>
+                <xf:setvalue
+                    if="instance('control-instance')/generatePdf='true'"
+                    model="submission_model"
+                    ref="instance('control-instance')/required" value="'false'"/>
+            </xf:action>
+            
+            <xf:instance id="fbc_80_lds" xmlns="">
+                <local_src />
+            </xf:instance>
+            <xf:instance id="fbc_80_eds" xmlns="" src="expXml:volunteerServices.volunteerAssignmentTypes">
+                <ext_src/>
+            </xf:instance>
+            
+            <xf:instance id="fbc_81_lds" xmlns="">
+                <local_src />
+            </xf:instance>
+            <xf:instance id="fbc_81_eds" xmlns="" src="expXml:volunteerServices.volunteers">
+                <ext_src/>
+            </xf:instance>
+            
+            <xf:instance id="fbc_82_lds" xmlns="">
+                <local_src />
+            </xf:instance>
+            <xf:instance id="fbc_82_eds" xmlns="" src="expXml:volunteerServices.suggestedVolunteers">
+                <ext_src/>
+            </xf:instance>
+            
+            <xf:instance id="fbc_83_lds" xmlns="">
+                <local_src>
+                    <localizedEntries lang="en">
+                        <item>
+                            <itemLabel>Yes</itemLabel>
+                            <itemValue>true</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>No</itemLabel>
+                            <itemValue>false</itemValue>
+                        </item>
+                    </localizedEntries>
+                    <localizedEntries lang="is_IS">
+                        <item>
+                            <itemLabel>Já</itemLabel>
+                            <itemValue>true</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Nei</itemLabel>
+                            <itemValue>false</itemValue>
+                        </item>
+                    </localizedEntries>
+                    <localizedEntries lang="sv_SE">
+                        <item>
+                            <itemLabel>Ja</itemLabel>
+                            <itemValue>true</itemValue>
+                        </item>
+                        <item>
+                            <itemLabel>Nej</itemLabel>
+                            <itemValue>false</itemValue>
+                        </item>
+                    </localizedEntries>
+                </local_src>
+            </xf:instance>
+            <xf:instance id="fbc_83_eds" xmlns="">
+                <ext_src/>
+            </xf:instance>
+        </xf:model>
+        <xs:schema id="fb-schema">
+            <xs:simpleType name="fbc_47fb_email">
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="[A-Za-z0-9!#-'\*\+\-/=\?\^_`\{-~]+(\.[A-Za-z0-9!#-'\*\+\-/=\?\^_`\{-~]+)*@[A-Za-z0-9!#-'\*\+\-/=\?\^_`\{-~]+(\.[A-Za-z0-9!#-'\*\+\-/=\?\^_`\{-~]+)*"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:schema>
+        <xf:model id="x-autofill-model">
+            <xf:action ev:event="xforms-ready">
+            	<xf:setvalue bind="fbc_51_bind"
+                    id="fbc_51-autofill-setvalue"
+                    model="submission_model" value="instance('fbc_51_autofill-instance')/fb-afk-collection-string-loginSession.user.name"/>
+                <xf:setvalue bind="fbc_65_bind"
+                    id="fbc_65-autofill-setvalue"
+                    model="submission_model" value="instance('fbc_65_autofill-instance')/fb-afk-collection-string-loginSession.user.name"/>
+                <xf:setvalue bind="fbc_67_bind"
+                    id="fbc_67-autofill-setvalue"
+                    model="submission_model" value="instance('fbc_67_autofill-instance')/fb-afk-collection-string-loginSession.user.phones.number"/>
+                <xf:setvalue bind="fbc_68_bind"
+                    id="fbc_68-autofill-setvalue"
+                    model="submission_model" value="instance('fbc_68_autofill-instance')/fb-afk-collection-string-loginSession.user.phones.number"/>
+                <xf:setvalue bind="fbc_69_bind"
+                    id="fbc_69-autofill-setvalue"
+                    model="submission_model" value="instance('fbc_69_autofill-instance')/fb-afk-collection-string-loginSession.user.emails.emailAddress"/>
+            </xf:action>
+        </xf:model>
+    </head>
+    <body>
+        <xf:group appearance="full">
+            <xf:group bind="errorsGroup" class="xformErrors">
+                <xf:repeat bind="errors">
+                    <xf:output ref="."/>
+                </xf:repeat>
+            </xf:group>
+            <idega:setError ev:event="idega-validation-error"
+                id="formSetErrorHandler" ref="instance('error-instance')/error"/>
+            <idega:switch>
+                <idega:case id="fbc_1" show="instance('control-instance')/generatePdf='true'">
+                    <xf:group appearance="full">
+                        <div class="fbc_header_text" id="fbc_49" type="fbc_header_text">
+                            <xf:output model="data_model" ref="instance('localized_strings')/fbc_49-text[@lang=instance('localized_strings')/current_language]"/>
+                        </div>
+                        <xf:input bind="fbc_51_bind" id="fbc_51" type="fbc_text">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_51-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_51"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_51"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_51-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_51']"/>
+                        </xf:input>
+                        <xf:input bind="fbc_50_bind" id="fbc_50" type="fbc_text">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_50-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_50"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_50"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_50-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_50']"/>
+                            <xf:help>
+                                <xf:output ref="instance('localized_strings')/fbc_50-help[@lang=instance('localized_strings')/current_language]"/>
+                            </xf:help>
+                        </xf:input>
+                        <xf:textarea bind="fbc_79_bind" id="fbc_79" type="fbc_textarea">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_79-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_79"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_79"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_79-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_79']"/>
+                        </xf:textarea>
+                        <xf:select appearance="full" bind="fbc_80_bind"
+                            id="fbc_80" type="fbc_multiple_select">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_80-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:itemset model="data_model" nodeset="instance('fbc_80_eds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                                <xf:label ref="itemLabel"/>
+                                <xf:value ref="itemValue"/>
+                            </xf:itemset>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_80"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_80"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_80-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_80']"/>
+                        </xf:select>
+                        <xf:input bind="fbc_52_bind" id="fbc_52" type="fbc_text">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_52-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:help>
+                                <xf:output ref="instance('localized_strings')/fbc_52-help[@lang=instance('localized_strings')/current_language]"/>
+                            </xf:help>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_52"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_52"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_52-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_52']"/>
+                        </xf:input>
+                        <xf:input bind="fbc_57_bind" id="fbc_57" type="fbc_date">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_57-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:help>
+                                <xf:output ref="instance('localized_strings')/fbc_57-help[@lang=instance('localized_strings')/current_language]"/>
+                            </xf:help>
+                        </xf:input>
+                        <xf:input bind="fbc_58_bind" id="fbc_58" type="fbc_text">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_58-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_58"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_58-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_58']"/>
+                        </xf:input>
+                        <xf:input bind="fbc_60_bind" id="fbc_60" type="fbc_text">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_60-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:help>
+                                <xf:output ref="instance('localized_strings')/fbc_60-help[@lang=instance('localized_strings')/current_language]"/>
+                            </xf:help>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_60"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_60"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_60-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_60']"/>
+                        </xf:input>
+                        <xf:input bind="fbc_61_bind" id="fbc_61" type="fbc_text" class="xFormInputMask_time">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_61-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:help>
+                                <xf:output ref="instance('localized_strings')/fbc_61-help[@lang=instance('localized_strings')/current_language]"/>
+                            </xf:help>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_61"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_61"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_61-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_61']"/>
+                        </xf:input>
+                        <div class="fbc_header_text" id="fbc_63" type="fbc_header_text">
+                            <xf:output model="data_model" ref="instance('localized_strings')/fbc_63-text[@lang=instance('localized_strings')/current_language]"/>
+                        </div>
+                        <xf:input bind="fbc_65_bind" id="fbc_65" type="fbc_text">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_65-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_65"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_65"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_65-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_65']"/>
+                        </xf:input>
+                        <xf:input bind="fbc_67_bind" id="fbc_67">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_67-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_67"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_67"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_67-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_67']"/>
+                        </xf:input>
+                        <xf:input bind="fbc_68_bind" id="fbc_68">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_68-label[@lang=instance('localized_strings')/current_language]"/>
+                        </xf:input>
+                        <xf:input bind="fbc_69_bind" id="fbc_69">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_69-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_69"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_69"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_69-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_69']"/>
+                        </xf:input>
+                        <xf:select appearance="minimal"
+                            bind="fbc_81_bind" id="fbc_81" type="fbc_multiple_select_minimal">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_81-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:itemset model="data_model" nodeset="instance('fbc_81_eds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                                <xf:label ref="itemLabel"/>
+                                <xf:value ref="itemValue"/>
+                            </xf:itemset>
+                            <xf:help>
+                                <xf:output ref="instance('localized_strings')/fbc_81-help[@lang=instance('localized_strings')/current_language]"/>
+                            </xf:help>
+                        </xf:select>
+                        <xf:select appearance="minimal"
+                            bind="fbc_82_bind" id="fbc_82" type="fbc_multiple_select_minimal">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_82-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:itemset model="data_model" nodeset="instance('fbc_82_eds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                                <xf:label ref="itemLabel"/>
+                                <xf:value ref="itemValue"/>
+                            </xf:itemset>
+                            <xf:help>
+                                <xf:output ref="instance('localized_strings')/fbc_82-help[@lang=instance('localized_strings')/current_language]"/>
+                            </xf:help>
+                        </xf:select>
+                        <xf:select appearance="full" bind="fbc_83_bind"
+                            id="fbc_83" type="fbc_multiple_select">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_83-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:itemset model="data_model" nodeset="instance('fbc_83_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                                <xf:label ref="itemLabel"/>
+                                <xf:value ref="itemValue"/>
+                            </xf:itemset>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_83"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_83"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_83-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_83']"/>
+                            <xf:help>
+                                <xf:output ref="instance('localized_strings')/fbc_83-help[@lang=instance('localized_strings')/current_language]"/>
+                            </xf:help>
+                        </xf:select>
+                        <div class="fbc_header_text" id="fbc_75" type="fbc_header_text">
+                            <xf:output model="data_model" ref="instance('localized_strings')/fbc_75-text[@lang=instance('localized_strings')/current_language]"/>
+                        </div>
+                        <xf:input bind="fbc_73_bind" id="fbc_73" type="fbc_text">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_73-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:help>
+                                <xf:output ref="instance('localized_strings')/fbc_73-help[@lang=instance('localized_strings')/current_language]"/>
+                            </xf:help>
+                            <xf:dispatch ev:event="idega-xforms-ready"
+                                name="idega-validate" target="fbc_73"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_73"/>
+                            <idega:validator ev:event="idega-validate">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_73-required[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/error[@for='fbc_73']"/>
+                        </xf:input>
+                        <xf:input bind="fbc_74_bind" id="fbc_74" type="fbc_text">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_74-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:help>
+                                <xf:output ref="instance('localized_strings')/fbc_74-help[@lang=instance('localized_strings')/current_language]"/>
+                            </xf:help>
+                        </xf:input>
+                        <div class="fbc_button_area" id="fbc_2" type="fbc_button_area">
+                            <xf:trigger bind="bind-submissionButton"
+                                class="fbc_button_submit" id="fbc_55" type="fbc_button_save">
+                                <xf:label model="data_model" ref="instance('localized_strings')/fbc_55-label[@lang=instance('localized_strings')/current_language]"/>
+                                <xf:action ev:event="DOMActivate">
+                                    <xf:setvalue
+                                    model="submission_model" ref="instance('saveForm-instance')/savePhase"/>
+                                    <xf:dispatch name="xforms-rebuild" target="data_model"/>
+                                    <xf:dispatch
+                                    name="xforms-recalculate" target="data_model"/>
+                                    <xf:dispatch
+                                    name="xforms-revalidate" target="data_model"/>
+                                    <xf:dispatch name="xforms-refresh" target="data_model"/>
+                                    <idega:saveForm action="save"
+                                    formId="instance('data-instance')/form_id"
+                                    instanceId="data-instance"
+                                    linkLocation="instance('saveForm-instance')/link"
+                                    model="submission_model"
+                                    submissionId="instance('data-instance')/saveFormData/submissionId" submissionIdentifier="instance('data-instance')/*[@nodeType='formIdentifier']"/>
+                                    <idega:toggle case="fbc_5"/>
+                                </xf:action>
+                            </xf:trigger>
+                            <xf:trigger bind="bind-submissionButton"
+                                class="fbc_button_submit" id="fbc_77" type="fbc_button_submit">
+                                <xf:label model="data_model" ref="instance('localized_strings')/fbc_77-label[@lang=instance('localized_strings')/current_language]"/>
+                                <xf:action ev:event="DOMActivate">
+                                    <xf:setvalue
+                                    ref="instance('control-instance')/submission" value="'true'"/>
+                                    <idega:dispatch
+                                    name="idega-validate" target="//h:body//*[starts-with(@id, 'fbc_')]"/>
+                                    <xf:dispatch name="xforms-rebuild" target="data_model"/>
+                                    <xf:dispatch
+                                    name="xforms-recalculate" target="data_model"/>
+                                    <xf:dispatch
+                                    name="xforms-revalidate" target="data_model"/>
+                                    <xf:dispatch name="xforms-refresh" target="data_model"/>
+                                    <xf:action if="count-non-empty(instance('error-instance')/error)=0">
+                                    <xf:send submission="submit_data_submission"/>
+                                    </xf:action>
+                                    <xf:dispatch
+                                    if="count-non-empty(instance('error-instance')/error)!=0"
+                                    name="idega-submit-error" target="idega-submission-error"/>
+                                </xf:action>
+                            </xf:trigger>
+                            <xf:trigger bind="bind-submissionButton"
+                                class="fbc_button_submit" id="fbc_78" type="fbc_button_get_as_pdf">
+                                <xf:label model="data_model" ref="instance('localized_strings')/fbc_78-pdf-label[@lang=instance('localized_strings')/current_language]"/>
+                                <xf:action ev:event="DOMActivate">
+                                    <idega:saveFormAndGeneratePdf
+                                    action="saveFormAndGeneratePdf"
+                                    formId="instance('data-instance')/form_id"
+                                    instanceId="data-instance"
+                                    linkLocation="instance('downloadFormAsPDF-instance')/link"
+                                    model="submission_model"
+                                    submissionId="instance('data-instance')/saveFormData/submissionId" submissionIdentifier="instance('data-instance')/*[@nodeType='formIdentifier']"/>
+                                </xf:action>
+                                <xf:load
+                                    ref="instance('downloadFormAsPDF-instance')/link" show="handlemanually"/>
+                            </xf:trigger>
+                        </div>
+                    </xf:group>
+                </idega:case>
+                <idega:case id="fbc_4" type="thx_page">
+                    <xf:group appearance="full" class="thx_page">
+                        <xf:label model="data_model" ref="instance('localized_strings')/page-2-label[@lang=instance('localized_strings')/current_language]"/>
+                        <xf:output model="data_model" ref="instance('localized_strings')/submission-success_message[@lang=instance('localized_strings')/current_language]"/>
+                    </xf:group>
+                </idega:case>
+                <idega:case id="fbc_5" type="save_page">
+                    <xf:group appearance="full">
+                        <idega:setError
+                            ev:event="idega-validation-error"
+                            id="sendLinkSetErrorHandler"
+                            if="idega:instance('submission_model', 'saveForm-instance')/savePhase = 'true'" ref="instance('error-instance')/sendLinkError"/>
+                        <xf:label model="data_model" ref="instance('localized_strings')/form-title[@lang=instance('localized_strings')/current_language]"/>
+                        <xf:output model="data_model" ref="instance('localized_strings')/save-form-link-label[@lang=instance('localized_strings')/current_language]"/>
+                        <xf:trigger appearance="minimal" class="link" id="fbc_7">
+                            <xf:label model="submission_model" ref="instance('saveForm-instance')/link"/>
+                            <xf:load ev:event="DOMActivate"
+                                ref="instance('saveForm-instance')/link" show="replace"/>
+                        </xf:trigger>
+                        <xf:input bind="fbc_48_bind" id="fbc_48">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_48-title[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:dispatch ev:event="xforms-value-changed"
+                                name="idega-validate" target="fbc_48"/>
+                            <idega:validator ev:event="idega-validate"
+                                if="instance('saveForm-instance')/savePhase = 'true'"
+                                seterror="sendLinkSetErrorHandler" submission="instance('control-instance')/sendLinkSubmission">
+                                <idega:message errorType="required"
+                                    model="data_model" value="instance('localized_strings')/fbc_48-required[@lang=instance('localized_strings')/current_language]"/>
+                                <idega:message errorType="validation"
+                                    model="data_model" value="instance('localized_strings')/fbc_48-validation[@lang=instance('localized_strings')/current_language]"/>
+                            </idega:validator>
+                            <xf:alert ref="instance('error-instance')/sendLinkError[@for='fbc_48']"/>
+                        </xf:input>
+                        <div class="fbc_button_area" id="fbc_8" type="fbc_button_area">
+                            <xf:trigger class="fbc_button_submit" id="fbc_9">
+                                <xf:label model="data_model" ref="instance('localized_strings')/send-label[@lang=instance('localized_strings')/current_language]"/>
+                                <xf:action ev:event="DOMActivate">
+                                    <xf:setvalue
+                                    ref="instance('control-instance')/sendLinkSubmission" value="'true'"/>
+                                    <xf:dispatch name="xforms-rebuild" target="data_model"/>
+                                    <xf:dispatch
+                                    name="xforms-recalculate" target="data_model"/>
+                                    <xf:dispatch
+                                    name="xforms-revalidate" target="data_model"/>
+                                    <xf:dispatch name="xforms-refresh" target="data_model"/>
+                                    <xf:dispatch name="idega-validate" target="fbc_48"/>
+                                    <xf:action if="count-non-empty(instance('error-instance')/sendLinkError)=0">
+                                    <idega:saveForm
+                                    action="sendLink"
+                                    email="instance('saveForm-instance')/sendLinkEmail" link="instance('saveForm-instance')/link"/>
+                                    <idega:toggle case="fbc_6"/>
+                                    </xf:action>
+                                    <xf:dispatch
+                                    if="count-non-empty(instance('error-instance')/sendLinkError)!=0"
+                                    name="idega-submit-error" target="idega-submission-error"/>
+                                </xf:action>
+                            </xf:trigger>
+                            <xf:trigger class="fbc_button_submit" id="fbc_10">
+                                <xf:label model="data_model" ref="instance('localized_strings')/back-label[@lang=instance('localized_strings')/current_language]"/>
+                                <xf:action ev:event="DOMActivate">
+                                    <xf:setvalue
+                                    model="submission_model" ref="instance('saveForm-instance')/savePhase">false</xf:setvalue>
+                                    <xf:dispatch name="xforms-rebuild" target="data_model"/>
+                                    <xf:dispatch
+                                    name="xforms-recalculate" target="data_model"/>
+                                    <xf:dispatch
+                                    name="xforms-revalidate" target="data_model"/>
+                                    <xf:dispatch name="xforms-refresh" target="data_model"/>
+                                    <idega:toggle case="fbc_1"/>
+                                </xf:action>
+                            </xf:trigger>
+                        </div>
+                    </xf:group>
+                </idega:case>
+                <idega:case id="fbc_6" type="save_page">
+                    <xf:group appearance="full" class="save_page">
+                        <xf:label model="data_model" ref="instance('localized_strings')/save-success_label[@lang=instance('localized_strings')/current_language]"/>
+                        <xf:output model="data_model" ref="instance('localized_strings')/save-success_message[@lang=instance('localized_strings')/current_language]"/>
+                    </xf:group>
+                </idega:case>
+            </idega:switch>
+        </xf:group>
+    </body>
+</html>

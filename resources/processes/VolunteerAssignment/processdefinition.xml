@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition xmlns=""  name="VolunteerAssignment">
+  
+  <event type="process-start">
+         <script>
+            <expression>
+                String handlerRoleName = "bpm_volunteer_assignment_handler";
+                String ownerRoleName = "bpm_volunteer_assignment_owner";
+                String caseHandlerRoleName = "bpm_volunteer_assignment_caseHandler";
+                String invitedRoleName = "bpm_volunteer_assignment_invited";
+                
+                mainProcessInstanceId = executionContext.getProcessInstance().getId();
+                    
+            </expression>
+            <variable name='mainProcessInstanceId' access='write' />
+            <variable name='handlerRoleName' access='write' />
+            <variable name='ownerRoleName' access='write' />
+            <variable name='caseHandlerRoleName' access='write' />
+            <variable name='invitedRoleName' access='write' />
+         </script>
+  </event>
+  <event type="process-start">
+    <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+            <handlerName>rolesAssignmentHandler</handlerName>
+                    <propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+                        <entry>
+                            <key>assignmentExpression</key>
+                            <value>
+                               ${
+                               String handlerRoleName = resolver.get("handlerRoleName");
+                               String handlerNativeRoleName = handlerRoleName;
+                               
+                               return
+                               "{rolesAssignment: {roles: {role: ["+
+                               "     {roleName: \""+handlerRoleName+"\", identities: {identity: [{identityType: ROLE, identityId: \""+handlerNativeRoleName+"\"}]}}"+
+                               " ]} }}";
+                               }
+                            </value>
+                    </entry>
+                </propertyMap>
+        </action>
+  </event>
+  
+  <event type="process-start">
+        <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+            <handlerName>rightsManagementRolesAssignmentHandler</handlerName>
+                <propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+                    <entry>
+                        <key>assignmentExpression</key>
+                        <value>
+                            {rightsAssignment: {roles: {role: [
+                                {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [modifyPermissions, caseHandler]}},
+                                {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [seeContacts]}, rolesContacts: {string: ["all"]}},
+                                {roleName: "bpm_volunteer_assignment_owner", accesses: {access: [seeContacts]}, rolesContacts: {string: ["bpm_volunteer_assignment_caseHandler"]}}
+                            ]} }}
+                        </value>
+                </entry>
+            </propertyMap>
+        </action>
+    </event>
+  
+   <start-state name="submitNewVolunteerAssignment">
+      <task name="Volunteer assignment">
+         <assignment class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+				<handlerName>jsonAssignmentHandler</handlerName>
+				<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+					<entry><key>expression</key>
+						<value>
+				             {taskAssignment: {roles: {role: [
+				                   {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read]}},
+				                   {roleName: "bpm_volunteer_assignment_owner", accesses: {access: [read, write]}, assignIdentities: {string: ["current_user"]}},
+				                   {roleName: "bpm_volunteer_assignment_invited", accesses: {access: [read]}}
+		               		 ]} }}
+			            </value>
+					</entry>
+			</propertyMap>
+		 </assignment>
+         <controller>
+            <variable name="string_caseDescription" 							access="write,required"></variable>
+            <variable name="string_volunteerAssignmentCreator" 					access="write,required"></variable>
+            <variable name="string_volunteerAssignmentArea" 					access="write,required"></variable>
+            <variable name="date_volunteerAssignmentDate" 						access="write"></variable>
+            <variable name="date_volunteerAssignmentCreationDate" 				access="write,required"></variable>
+            <variable name="date_volunteerAssignmentExpireDate" 				access="write,required"></variable>
+			<variable name="string_volunteerAssignmentTime"						access="write,required"></variable>
+			<variable name="string_volunteerAssignmentContactName"				access="write,required"></variable>
+			<variable name="string_volunteerAssignmentContactPhone1"			access="write,required"></variable>
+			<variable name="string_volunteerAssignmentContactPhone2"			access="write"></variable>
+			<variable name="string_volunteerAssignmentContactEmail"				access="write,required"></variable>
+			<variable name="string_volunteerAssignmentNumberOfVolunteers"		access="write,required"></variable>
+			<variable name="string_volunteerAssignmentExpectedExecutionTime"	access="write"></variable>
+			<variable name="string_volunteerAssignmentDescription"				access="write,required"></variable>
+			<variable name="list_volunteerAssignmentType"						access="write,required"></variable>
+			<variable name="list_volunteerAssignmentVolunteers"					access="write"></variable>
+			<variable name="list_volunteerAssignmentProposedVolunteers"			access="write"></variable>
+			<variable name="list_volunteerAssignmentRegistered"					access="write,required"></variable>
+         </controller>
+      </task>
+      <transition to="fork3"></transition>
+		<event type="node-leave">
+		  <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+                <handlerName>setProcessDescriptionHandler</handlerName>
+          </action>
+		</event>
+   </start-state>
+   <node name="sendHandlerNewCaseArrivedMessage">
+      <event type="node-enter">
+         <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+				<handlerName>sendCaseMessagesHandler</handlerName>
+				<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+			        <entry>
+			        	<key>inlineSubject</key>
+			        	<value>
+			        		${
+			        		Map subjectMap = new HashMap();
+			        		subjectMap.put("en", "New volunteer assignment has been created");
+			        		subjectMap.put("is_IS", "N\u00FDtt m\u00E1l stofna\u00F0");
+			        		return subjectMap;
+			        		}
+			        		
+                		</value>
+                	</entry>
+                	<entry>
+			        	<key>inlineMessage</key>
+			        	<value>
+			        		${
+			        		Map messageMap = new HashMap();
+			        		messageMap.put("en", "Hello, {0}. New {1} volunteer assignment with identifier {2} and description {3} has been created.");
+			        		messageMap.put("is_IS", "S\u00E6l/ll, {0}. N\u00FDtt m\u00E1l \u00ED flokknum {1} me\u00F0 nafni\u00F0 {3} og m\u00E1lsn\u00FAmeri\u00F0 {2} hefur veri\u00F0 stofna\u00F0.");
+			        		return messageMap;
+			        		}
+                		</value>
+                	</entry>
+                	<entry>
+			        	<key>messageValues</key>
+			        	<value>
+			        		{list: {mv: [{type: "bean", value: "user.name"}, {type: "bean", value: "piw.processDefinitionW.startTaskName"}, {type: "bean", value: "piw.processIdentifier"}, {type: "bean", value: "piw.processDescription"}]}}
+                		</value>
+                	</entry>
+                	<entry><key>sendToRoles</key><value>bpm_volunteer_assignment_handler</value></entry>
+			    </propertyMap>
+		 </action>
+        
+      </event>
+   	  <transition to="editFork" name="toEditFork"></transition>
+   </node>
+   <end-state name="additionalInformationEnd"></end-state>
+   <end-state name="end">
+   
+   </end-state>
+
+	<end-state name="emailsFetcherEnd"></end-state>
+
+	<end-state name="informAssignedVolunteerOrganizationEnd"></end-state>
+
+	<event type="handlerAssignedToCase">
+        <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+				<handlerName>caseHandlerAssignmentHandler</handlerName>
+				
+				<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+				<entry><key>caseHandlerRoleExp</key><value>{role: {roleName: "bpm_volunteer_assignment_caseHandler"}}</value></entry>
+			        <entry>
+			        	<key>inlineSubject</key>
+			        	<value>
+			        		${
+			        		Map subjectMap = new HashMap();
+			        		subjectMap.put("en", "Handler was assigned to the volunteer assignment");
+			        		subjectMap.put("is_IS", "M\u00E1li\u00F0 \u00FEitt hefur fengi\u00F0 umsj\u00F3narmann");
+			        		return subjectMap;
+			        		}
+			        		
+                		</value>
+                	</entry>
+                	<entry>
+			        	<key>inlineMessage</key>
+			        	<value>
+			        		${
+			        		Map messageMap = new HashMap();
+			        		messageMap.put("en", "Hi, {0}.\n Handler {1} was assigned to the volunteer assignment {2} with identifier {3} and description {4}");
+			        		messageMap.put("is_IS", "S\u00E6l/ll, {0}.\n {1} hefur teki\u00F0 a\u00F0 s\u00E9r m\u00E1l \u00ED flokknum \"{2}\" me\u00F0 nafni\u00F0 \"{4}\" og m\u00E1lsn\u00FAmeri\u00F0 \"{3}\"");
+			        		return messageMap;
+			        		}
+                		</value>
+                	</entry>
+                	<entry>
+			        	<key>messageValues</key>
+			        	<value>
+			        		{list: {mv: [{type: "bean", value: "user.name"}, {type: "roleUsers", value: "{role: {roleName: \"bpm_volunteer_assignment_caseHandler\"}}"},  {type: "bean", value: "piw.processDefinitionW.startTaskName"}, {type: "bean", value: "piw.processIdentifier"}, {type: "bean", value: "piw.processDescription"}]}}
+                		</value>
+                	</entry>
+                	<entry><key>sendToRoles</key><value>bpm_volunteer_assignment_owner bpm_volunteer_assignment_handler</value></entry>
+			    </propertyMap>
+		 </action>
+    </event>
+    <event type="handlerUnassignedFromCase">
+        <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+				<handlerName>caseHandlerAssignmentHandler</handlerName>
+				<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+			      	<entry><key>caseHandlerRoleExp</key><value>{role: {roleName: "bpm_volunteer_assignment_caseHandler"}}</value></entry>
+			        <entry>
+			        	<key>inlineSubject</key>
+			        	<value>
+			        		${
+			        		Map subjectMap = new HashMap();
+			        		subjectMap.put("en", "Handler was unassigned from the volunteer assignment");
+			        		subjectMap.put("is_IS", "Umsj\u00F3narmannaskipti");
+			        		return subjectMap;
+			        		}
+			        		
+                		</value>
+                	</entry>
+                	<entry>
+			        	<key>inlineMessage</key>
+			        	<value>
+			        		${
+			        		Map messageMap = new HashMap();
+			        		messageMap.put("en", "Hi, {0}.\n Handler was unassigned from the volunteer assignment {1} with identifier {2} and description {3}");
+			        		messageMap.put("is_IS", "S\u00E6l/ll, {0}.\n Umsj\u00F3narmannaskipti hafa \u00E1tt s\u00E9r sta\u00F0 fyrir m\u00E1l \u00ED flokknum \"{1}\" me\u00F0 nafni\u00F0 \"{3}\" og m\u00E1lsn\u00FAmeri\u00F0 \"{2}\". N\u00FDr umsj\u00F3narma\u00F0ur tekur vi\u00F0.");
+			        		return messageMap;
+			        		}
+                		</value>
+                	</entry>
+                	<entry>
+			        	<key>messageValues</key>
+			        	<value>
+			        		{list: {mv: [{type: "bean", value: "user.name"}, {type: "bean", value: "piw.processDefinitionW.startTaskName"}, {type: "bean", value: "piw.processIdentifier"}, {type: "bean", value: "piw.processDescription"}]}}
+                		</value>
+                	</entry>
+                	<entry><key>sendToRoles</key><value>bpm_volunteer_assignment_handler</value></entry>
+			    </propertyMap>
+		</action>
+    </event>
+    <event type="postStartActivity">
+        <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+			<handlerName>casesStatusHandler</handlerName>
+			<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+			   	   	<entry><key>caseStatusMappedName</key><value>caseStatusInProgress</value></entry>
+			  	<entry><key>ifCaseStatusMappedName</key><value>caseStatusOpened</value></entry>
+			  	<entry><key>processInstanceId</key><value>#{mainProcessInstanceId}</value></entry>
+		
+			</propertyMap>
+		</action>
+    </event>
+   <fork name="informFork">
+      <transition to="informVolunteers" name="toInformVolunteers"></transition>
+		<transition to="informAssignedVolunteerOrganization" name="toInformAssignedVolunteerOrganization"></transition>
+   </fork>
+   <node name="endCaseProcess">
+      <event type="node-leave">
+          <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+                <handlerName>endCaseProcessHandler</handlerName>
+          </action>
+      </event>
+      <transition to="endProcess"></transition>
+   </node>
+   <node name="endProcess">
+      <event type="node-leave">
+         <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+                <handlerName>endProcessHandler</handlerName>
+          </action>
+      </event>
+      <transition to="end"></transition>
+   </node>
+   <process-state name="emailsFetcher">
+      <sub-process name="fetchEmails" binding="late" />
+      <variable name="string_emailReadAssignmentExpression" access="read" mapped-name="string_emailReadAssignmentExpression" />
+      <event type="node-enter">
+         <script>
+            <expression>
+                emailReadAssignmentExpression = 
+	                   "{taskAssignment: {rolesFromProcessInstanceId: "+executionContext.getProcessInstance().getId()
+	                   +", roles: {role: ["
+	                   +"{roleName: \"bpm_volunteer_assignment_handler\", accesses: {access: [read]}}"
+	                   +"]} }}";
+            </expression>
+            <variable name='string_emailReadAssignmentExpression' access='write' mapped-name='emailReadAssignmentExpression' />
+         </script>
+      </event>
+		<transition to="emailsFetcherEnd"></transition>
+   
+   </process-state>
+   <fork name="fork3">
+		<transition name="toEmailsFetcher" to="emailsFetcher"></transition>
+      <transition to="handlerAssignsOwner" name="toHandlerAssignsOwner"></transition>
+   </fork>
+   <task-node name="completeProcess">
+		<task name="Complete process">
+			<assignment class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+				<handlerName>jsonAssignmentHandler</handlerName>
+				<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+					<entry><key>expression</key>
+						<value>
+			                {taskAssignment: {roles: {role: [
+			                    {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read, write]}},
+			                    {roleName: "bpm_volunteer_assignment_owner", accesses: {access: [read]}},
+			                    {roleName: "bpm_volunteer_assignment_invited", accesses: {access: [read]}}
+		                    ]} }}
+			            </value>
+					</entry>
+				</propertyMap>
+			</assignment>
+			<controller>
+				<variable access="write" name="string_processEndFinalSummary"></variable>
+				<variable access="write" name="files_processEndAttachments"></variable>
+			</controller>
+		</task>
+		<transition to="endCaseProcess"></transition>
+	</task-node>
+
+	<process-state name="handlerAssignsOwner">
+	  <sub-process name="AssignmentAssist" binding="late" />
+      
+      <variable name="assignmentAssistantRoleExp" access="read" mapped-name="assistantRoleExpression" />
+      <variable name="assignmentAssigneeRoleExp" access="read" mapped-name="assigneeRoleExpression" />
+      <variable name="myProcessInstanceId" access="read" mapped-name="assignFromProcessInstanceId" />
+      <variable name="ownerUserPersonalData" access="read" mapped-name="assigneeData" />
+      
+      <event type="node-enter">
+         <script>
+            <expression>
+                s_processInstanceId = token.getProcessInstance().getId();
+                
+                s_upd = new com.idega.jbpm.identity.UserPersonalData();
+                s_upd.setUserEmail(userEmailAddress);
+                s_upd.setFullName(userFullName);
+                s_upd.setPersonalId(userPersonalId);
+                s_upd.setUserType("BPM_USER_NATURAL");
+                s_upd.setUserAddress(userAddress);
+                s_upd.setUserPostalCode(userPostalCode);
+                s_upd.setUserMunicipality(userMunicipality);
+                s_upd.setUserPhone(userPhone);
+                s_upd.setHideInContacts(true);
+                s_upd.setGenderName(userGenderName);
+                
+                s_roleExp = "{role: {roleName: \"bpm_volunteer_assignment_handler\"}}";
+                s_assigneeRoleExp = "{role: {roleName: \"bpm_volunteer_assignment_owner\"}}";
+            </expression>
+            <variable name='myProcessInstanceId' access='write' mapped-name='s_processInstanceId' />
+            <variable name='ownerUserPersonalData' access='write' mapped-name='s_upd' />
+            <variable name='assignmentAssistantRoleExp' access='write' mapped-name='s_roleExp' />
+            <variable name='assignmentAssigneeRoleExp' access='write' mapped-name='s_assigneeRoleExp' />
+            
+            <variable name='string_ownerKennitala' access='read' mapped-name='userPersonalId' />
+            <variable name='string_ownerAddress' access='read' mapped-name='userAddress' />
+            <variable name='string_ownerPostCode' access='read' mapped-name='userPostalCode' />
+            <variable name='string_ownerMunicipality' access='read' mapped-name='userMunicipality' />
+            <variable name='string_ownerPhone' access='read' mapped-name='userPhone' />
+            <variable name='string_ownerFullName' access='read' mapped-name='userFullName' />
+            <variable name='string_ownerEmailAddress' access='read' mapped-name='userEmailAddress' />
+            <variable name='string_ownerGender' access='read' mapped-name='userGenderName' />
+            
+            
+         </script>
+      </event>
+		<transition to="ifHandlerAssigned"></transition>
+	</process-state>
+
+	<process-state name="anonymousOwnerAssignment">
+		<sub-process name="AnonAssignment" binding="late" />
+      
+      <variable name="assignmentAssigneeRoleExp" access="read" mapped-name="assigneeRoleExpression" />
+      <variable name="myProcessInstanceId" access="read" mapped-name="assignFromProcessInstanceId" />
+      <variable name="ownerUserPersonalData" access="read" mapped-name="assigneeData" />
+      
+      <event type="node-enter">
+         <script>
+         <!-- TODO: this exp should be global -->
+            <expression>
+                s_processInstanceId = token.getProcessInstance().getId();
+                
+                s_upd = new com.idega.jbpm.identity.UserPersonalData();
+                s_upd.setUserEmail(userEmailAddress);
+                s_upd.setFullName(userFullName);
+                s_upd.setPersonalId(userPersonalId);
+                s_upd.setUserType("BPM_USER_NATURAL");
+                s_upd.setUserAddress(userAddress);
+                s_upd.setUserPostalCode(userPostalCode);
+                s_upd.setUserMunicipality(userMunicipality);
+                s_upd.setUserPhone(userPhone);
+                s_upd.setGenderName(userGenderName);
+                
+                s_assigneeRoleExp = "{role: {roleName: \"bpm_volunteer_assignment_owner\"}}";
+            </expression>
+            <variable name='myProcessInstanceId' access='write' mapped-name='s_processInstanceId' />
+            <variable name='ownerUserPersonalData' access='write' mapped-name='s_upd' />
+            <variable name='assignmentAssigneeRoleExp' access='write' mapped-name='s_assigneeRoleExp' />
+            
+            <variable name='string_ownerKennitala' access='read' mapped-name='userPersonalId' />
+            <variable name='string_ownerAddress' access='read' mapped-name='userAddress' />
+            <variable name='string_ownerPostCode' access='read' mapped-name='userPostalCode' />
+            <variable name='string_ownerMunicipality' access='read' mapped-name='userMunicipality' />
+            <variable name='string_ownerPhone' access='read' mapped-name='userPhone' />
+            <variable name='string_ownerFullName' access='read' mapped-name='userFullName' />
+            <variable name='string_ownerEmailAddress' access='read' mapped-name='userEmailAddress' />
+            <variable name='string_ownerGender' access='read' mapped-name='userGenderName' />
+            
+         </script>
+      </event>
+		<transition to="sendOwnerCaseCreatedMessage" name=""></transition>
+	</process-state>
+
+	<decision name="ifHandlerAssigned" expression="#{handlerAssignedOwner != null &amp;&amp; handlerAssignedOwner}">
+		<transition to="anonymousOwnerAssignment" name="false"></transition>
+		<transition to="sendHandlerNewCaseArrivedMessage" name="true"></transition>
+	</decision>
+
+	<node name="sendOwnerCaseCreatedMessage">
+		<event type="node-enter">
+		  <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+				<handlerName>sendCaseMessagesHandler</handlerName>
+				<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+			        <entry>
+			        	<key>inlineSubject</key>
+			        	<value>
+			        		${
+			        		Map subjectMap = new HashMap();
+			        		subjectMap.put("en", "Volunteer assignment created successfully!");
+			        		subjectMap.put("is_IS", "\u00DEakka \u00FE\u00E9r fyrir, n\u00FDtt m\u00E1l hefur veri\u00F0 stofna\u00F0 og ver\u00F0ur afgreitt eins flj\u00F3tt og au\u00F0i\u00F0 er.");
+			        		return subjectMap;
+			        		}
+			        		
+                		</value>
+                	</entry>
+                	<entry>
+			        	<key>inlineMessage</key>
+			        	<value>
+			        		${
+			        		Map messageMap = new HashMap();
+			        		messageMap.put("en", "Hello, {0}. You have successfully created volunteer assignment {1} with identifier {2} and description {3}.");
+			        		messageMap.put("is_IS", "S\u00E6l/ll, {0}. \u00DE\u00FA hefur n\u00FA send inn ums\u00F3kn \u00ED flokknum {1} me\u00F0 m\u00E1lsn\u00FAmeri\u00F0 \"{2}\" og nafni\u00F0 \"{3}\" .");
+			        		return messageMap;
+			        		}
+                		</value>
+                	</entry>
+                	<entry>
+			        	<key>messageValues</key>
+			        	<value>
+			        		{list: {mv: [{type: "bean", value: "user.name"}, {type: "bean", value: "piw.processDefinitionW.startTaskName"}, {type: "bean", value: "piw.processIdentifier"}, {type: "bean", value: "piw.processDescription"}, {type: "bean", value: "caseUser.urlToTheCase"}]}}
+                		</value>
+                	</entry>
+                	<entry><key>sendToRoles</key><value>bpm_volunteer_assignment_owner</value></entry>
+			    </propertyMap>
+		 </action>
+		</event>
+		<transition to="sendHandlerNewCaseArrivedMessage" name=""></transition>
+	</node>
+
+	<node name="informVolunteers">
+		<action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+			<handlerName>volunteerAssignmentHandler</handlerName>
+			<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+				<entry>
+			    	<key>processInstanceId</key>
+			       	<value>#{mainProcessInstanceId}</value>
+                </entry>
+            </propertyMap>
+         </action>
+		<transition to="additionalInformationEnd"></transition>
+	</node>
+
+	<node name="informAssignedVolunteerOrganization">
+		<transition to="informAssignedVolunteerOrganizationEnd"></transition>
+	</node>
+
+	<task-node name="editVolunteerAssignment">
+		<task name="Edit volunteer assignment" priority="-1">
+			<assignment class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+					<handlerName>jsonAssignmentHandler</handlerName>
+					<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+						<entry><key>expression</key>
+							<value>
+					             {taskAssignment: {roles: {role: [
+					                   {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read]}},
+					                   {roleName: "bpm_volunteer_assignment_owner", accesses: {access: [read, write]}, assignIdentities: {string: ["current_user"]}},
+					                   {roleName: "bpm_volunteer_assignment_invited", accesses: {access: [read]}}
+			               		 ]} }}
+				            </value>
+						</entry>
+				</propertyMap>
+			 </assignment>
+	         <controller>
+	            <variable name="string_caseDescription" 							access="read,write,required"></variable>
+	            <variable name="string_volunteerAssignmentCreator" 					access="read,write,required"></variable>
+	            <variable name="string_volunteerAssignmentArea" 					access="read,write,required"></variable>
+	            <variable name="date_volunteerAssignmentDate" 						access="read,write"></variable>
+	            <variable name="date_volunteerAssignmentCreationDate" 				access="read,write,required"></variable>
+	            <variable name="date_volunteerAssignmentExpireDate" 				access="read,write,required"></variable>
+				<variable name="string_volunteerAssignmentTime"						access="read,write,required"></variable>
+				<variable name="string_volunteerAssignmentContactName"				access="read,write,required"></variable>
+				<variable name="string_volunteerAssignmentContactPhone1"			access="read,write,required"></variable>
+				<variable name="string_volunteerAssignmentContactPhone2"			access="read,write"></variable>
+				<variable name="string_volunteerAssignmentContactEmail"				access="read,write,required"></variable>
+				<variable name="string_volunteerAssignmentNumberOfVolunteers"		access="read,write,required"></variable>
+				<variable name="string_volunteerAssignmentExpectedExecutionTime"	access="read,write"></variable>
+				<variable name="string_volunteerAssignmentDescription"				access="read,write,required"></variable>
+				<variable name="list_volunteerAssignmentType"						access="read,write,required"></variable>
+				<variable name="list_volunteerAssignmentVolunteers"					access="read,write"></variable>
+				<variable name="list_volunteerAssignmentProposedVolunteers"			access="read,write"></variable>
+				<variable name="list_volunteerAssignmentRegistered"					access="read,write,required"></variable>
+	         </controller>
+         </task>
+		<transition to="informFork"></transition>
+	</task-node>
+
+	<fork name="editFork">
+		<transition to="editVolunteerAssignment" name="toEditVolunteerAssignment"></transition>
+		<transition to="informFork" name="toInformFork"></transition>
+		<transition to="completeProcess" name="toCompleteProcess"></transition>
+	</fork>
+	
+	<idg:roles xmlns:idg="http://idega.com/bpm">
+        <role name="bpm_volunteer_assignment_caseHandler">
+          <labels>
+            <label lang="en">caseHandler</label>
+            <label lang="is_IS">Umsjónarmaður</label>
+            <label lang="sv_SE">Handler</label>
+          </labels>
+        </role>
+        <role name="bpm_volunteer_assignment_handler" createNative="true">
+          <labels>
+            <label lang="en">handler</label>
+            <label lang="is_IS">Umsjónarhópur</label>
+            <label lang="sv_SE">Handler</label>
+          </labels>
+        </role>
+        <role name="bpm_volunteer_assignment_invited">
+          <labels>
+            <label lang="en">invited</label>
+            <label lang="is_IS">Þátttakendur</label>
+            <label lang="sv_SE">Inbjuden</label>
+          </labels>
+        </role>
+        <role name="bpm_volunteer_assignment_owner">
+          <labels>
+            <label lang="en">owner</label>
+            <label lang="is_IS">Sendandi</label>
+            <label lang="sv_SE">Ägare</label>
+          </labels>
+        </role>
+        <role name="bpm_genericProcess_manager">
+          <labels>
+            <label lang="en">manager</label>
+            <label lang="is_IS">Verkefnastjóri</label>
+            <label lang="sv_SE">Chef</label>
+          </labels>
+        </role>
+    </idg:roles>
+</process-definition>

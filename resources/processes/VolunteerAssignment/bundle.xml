@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<processBundle-config>
+
+    <processBundle beanIdentifier="casesBPMProcessBundle" processManagerType="cases" />
+    
+    <tasks>
+        <task name="Volunteer assignment" initial="true">
+            <viewResource resourceIdentifier="forms/enterApplication.xhtml" viewType="xforms" viewResourceType="xforms" />
+        </task>
+        <task name="Edit volunteer assignment" order="0">
+            <viewResource resourceIdentifier="forms/enterApplication.xhtml" viewType="xforms" viewResourceType="xforms" />
+        </task>
+        <task name="Complete process" order="1">
+            <viewResource resourceIdentifier="forms/completeProcess.xhtml" viewType="xforms" viewResourceType="xforms" />
+        </task>
+    </tasks>
+    
+</processBundle-config>
