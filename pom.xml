@@ -48,9 +48,13 @@
   		<groupId>com.idega.block.egov</groupId>
   		<artifactId>is.idega.idegaweb.egov.bpm</artifactId>
   	</dependency>
-  <dependency>
+  	<dependency>
       <groupId>com.idega.block.egov</groupId>
       <artifactId>is.idega.idegaweb.egov.tenders</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.idega.block.egov</groupId>
+      <artifactId>com.idega.company</artifactId>
     </dependency>
   </dependencies>
   

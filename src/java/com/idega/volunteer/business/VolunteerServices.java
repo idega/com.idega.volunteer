@@ -17,6 +17,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.idega.company.event.CompanyCreatedEvent;
 import com.idega.core.business.DefaultSpringBean;
 import com.idega.event.UserCreatedEvent;
 import com.idega.user.business.GroupBusiness;
@@ -133,6 +134,13 @@ public class VolunteerServices extends DefaultSpringBean implements ApplicationL
 		if (event instanceof UserCreatedEvent) {
 			User volunteer = ((UserCreatedEvent) event).getUser();
 			addUserToGroup(VolunteerConstants.GROUP_VOLUNTEERS, volunteer);
+			return;
+		}
+		
+		if (event instanceof CompanyCreatedEvent) {
+			CompanyCreatedEvent companyCreated = (CompanyCreatedEvent) event;
+			addUserToGroup(VolunteerConstants.GROUP_VOLUNTEERS_ORGANIZATION, companyCreated.getUser());
+			return;
 		}
 	}
 }
