@@ -11,7 +11,6 @@
                 String invitedRoleName = "bpm_volunteer_assignment_invited";
                 
                 mainProcessInstanceId = executionContext.getProcessInstance().getId();
-                    
             </expression>
             <variable name='mainProcessInstanceId' access='write' />
             <variable name='handlerRoleName' access='write' />
@@ -44,7 +43,7 @@
   
   <event type="process-start">
         <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
-            <handlerName>rightsManagementRolesAssignmentHandler</handlerName>
+            <handlerName>rolesAssignmentHandler</handlerName>
                 <propertyMap key-type='java.lang.String' value-type='java.lang.String'>
                     <entry>
                         <key>assignmentExpression</key>
@@ -68,7 +67,7 @@
 					<entry><key>expression</key>
 						<value>
 				             {taskAssignment: {roles: {role: [
-				                   {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read]}},
+				                   {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read, write]}},
 				                   {roleName: "bpm_volunteer_assignment_owner", accesses: {access: [read, write]}, assignIdentities: {string: ["current_user"]}},
 				                   {roleName: "bpm_volunteer_assignment_invited", accesses: {access: [read]}}
 		               		 ]} }}
@@ -293,7 +292,7 @@
 						<value>
 			                {taskAssignment: {roles: {role: [
 			                    {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read, write]}},
-			                    {roleName: "bpm_volunteer_assignment_owner", accesses: {access: [read]}},
+			                    {roleName: "bpm_volunteer_assignment_owner", accesses: {access: [read, write]}},
 			                    {roleName: "bpm_volunteer_assignment_invited", accesses: {access: [read]}}
 		                    ]} }}
 			            </value>
@@ -471,7 +470,7 @@
 						<entry><key>expression</key>
 							<value>
 					             {taskAssignment: {roles: {role: [
-					                   {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read]}},
+					                   {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read, write]}},
 					                   {roleName: "bpm_volunteer_assignment_owner", accesses: {access: [read, write]}, assignIdentities: {string: ["current_user"]}},
 					                   {roleName: "bpm_volunteer_assignment_invited", accesses: {access: [read]}}
 			               		 ]} }}

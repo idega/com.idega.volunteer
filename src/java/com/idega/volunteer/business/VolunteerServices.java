@@ -21,6 +21,7 @@ import com.idega.company.event.CompanyCreatedEvent;
 import com.idega.core.business.DefaultSpringBean;
 import com.idega.event.UserCreatedEvent;
 import com.idega.user.business.GroupBusiness;
+import com.idega.user.business.UserBusiness;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.ListUtil;
@@ -106,40 +107,59 @@ public class VolunteerServices extends DefaultSpringBean implements ApplicationL
 		return allVolunteers;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void addUserToGroup(String groupName, User user) {
+	private void addUserToGroup(String groupName, User user, String groupNameToRemoveFrom) {
 		if (StringUtil.isEmpty(groupName) || user == null)
 			return;
 		
 		GroupBusiness groupBusiness = getServiceInstance(GroupBusiness.class);
-		Collection<Group> groups = null;
-		try {
-			groups = groupBusiness.getGroupsByGroupName(groupName);
-		} catch (RemoteException e) {
-			getLogger().log(Level.WARNING, "Error getting groups by name: " + groupName);
+		Collection<Group> groups = getGroupsByName(groupBusiness, groupName);
+		if (!ListUtil.isEmpty(groups)) {
+			for (Group group: groups) {
+				try {
+					groupBusiness.addUser(Integer.valueOf(group.getId()), user);
+				} catch (Exception e) {
+					getLogger().log(Level.WARNING, "Error adding user " + user + " to the group: " + group, e);
+				}
+			}
 		}
-		if (ListUtil.isEmpty(groups))
+		
+		if (StringUtil.isEmpty(groupNameToRemoveFrom))
 			return;
 		
+		groups = getGroupsByName(groupBusiness, groupNameToRemoveFrom);
+		if (ListUtil.isEmpty(groups))
+			return;
+		UserBusiness userBusiness = getServiceInstance(UserBusiness.class);
 		for (Group group: groups) {
 			try {
-				groupBusiness.addUser(Integer.valueOf(group.getId()), user);
+				userBusiness.removeUserFromGroup(user, group, user);
 			} catch (Exception e) {
-				getLogger().log(Level.WARNING, "Error adding user " + user + " to the group: " + group, e);
+				getLogger().log(Level.WARNING, "Error removing user: " + user + " from group: " + group, e);
 			}
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	private Collection<Group> getGroupsByName(GroupBusiness groupBusiness, String name) {
+		Collection<Group> groups = null;
+		try {
+			groups = groupBusiness.getGroupsByGroupName(name);
+		} catch (RemoteException e) {
+			getLogger().log(Level.WARNING, "Error getting groups by name: " + name);
+		}
+		return groups;
+	}
 
 	public void onApplicationEvent(ApplicationEvent event) {
-		if (event instanceof UserCreatedEvent) {
-			User volunteer = ((UserCreatedEvent) event).getUser();
-			addUserToGroup(VolunteerConstants.GROUP_VOLUNTEERS, volunteer);
+		if (event instanceof CompanyCreatedEvent) {
+			CompanyCreatedEvent companyCreated = (CompanyCreatedEvent) event;
+			addUserToGroup(VolunteerConstants.GROUP_VOLUNTEERS_ORGANIZATION, companyCreated.getUser(), VolunteerConstants.GROUP_VOLUNTEERS);
 			return;
 		}
 		
-		if (event instanceof CompanyCreatedEvent) {
-			CompanyCreatedEvent companyCreated = (CompanyCreatedEvent) event;
-			addUserToGroup(VolunteerConstants.GROUP_VOLUNTEERS_ORGANIZATION, companyCreated.getUser());
+		if (event instanceof UserCreatedEvent) {
+			User volunteer = ((UserCreatedEvent) event).getUser();
+			addUserToGroup(VolunteerConstants.GROUP_VOLUNTEERS, volunteer, null);
 			return;
 		}
 	}
