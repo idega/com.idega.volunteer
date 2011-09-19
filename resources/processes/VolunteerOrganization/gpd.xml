@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="GenericProcess" width="1119" height="829">
+  <node name="submitNewCase" x="328" y="-144" width="203" height="32">
+    <edge>
+      <label x="-16" y="-9"/>
+    </edge>
+  </node>
+  <node name="sendHandlerNewCaseArrivedMessage" x="422" y="201" width="201" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="end" x="520" y="658" width="24" height="25"/>
+  <node name="emailsFetcherEnd" x="755" y="65" width="23" height="23"/>
+  <node name="fork1" x="511" y="304" width="24" height="21">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="endCaseProcess" x="465" y="482" width="140" height="40">
+    <edge>
+      <label x="-30" y="-10"/>
+    </edge>
+  </node>
+  <node name="endProcess" x="463" y="591" width="140" height="40">
+    <edge>
+      <label x="-31" y="-9"/>
+    </edge>
+  </node>
+  <node name="emailsFetcher" x="701" y="-49" width="132" height="36">
+    <edge>
+      <label x="-17" y="-11"/>
+    </edge>
+  </node>
+  <node name="fork3" x="415" y="-89" width="25" height="24">
+    <edge>
+      <label x="-40" y="-18"/>
+      <bendpoint w1="340" h1="-1" w2="0" h2="-47"/>
+    </edge>
+    <edge>
+      <label x="-78" y="-14"/>
+    </edge>
+  </node>
+  <node name="completeProcess" x="460" y="369" width="149" height="46">
+    <edge>
+      <label x="-43" y="-9"/>
+    </edge>
+  </node>
+  <node name="handlerAssignsOwner" x="55" y="-96" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="anonymousOwnerAssignment" x="35" y="90" width="162" height="36">
+    <edge>
+      <label x="-89" y="-9"/>
+    </edge>
+  </node>
+  <node name="ifHandlerAssigned" x="53" y="4" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="-98" y="-16"/>
+      <bendpoint w1="405" h1="1" w2="2" h2="-196"/>
+    </edge>
+  </node>
+  <node name="sendOwnerCaseCreatedMessage" x="17" y="202" width="199" height="36">
+    <edge>
+      <label x="-111" y="-18"/>
+    </edge>
+  </node>
+  <node name="createOrganization" x="851" y="356" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="end-state1" x="1043" y="365" width="26" height="23"/>
+  <node name="editOrganization" x="729" y="221" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="disableOrganization" x="103" y="284" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="end-state2" x="146" y="443" width="26" height="24"/>
+  <node name="disableOrganizationData" x="92" y="358" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+</root-container>
