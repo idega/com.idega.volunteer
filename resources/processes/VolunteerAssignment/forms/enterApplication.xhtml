@@ -34,6 +34,8 @@
                     <Frivillig_fbc_81 mapping="list_volunteerAssignmentVolunteers"/>
                     <Frivilligfrslag_fbc_82 mapping="list_volunteerAssignmentProposedVolunteers"/>
                     <Registrerad_fbc_83 mapping="list_volunteerAssignmentRegistered"/>
+                    
+                    <Process_is_public_fbc_90 mapping="string_processIsPublic"/>
                 </data>
             </xf:instance>
             <xf:instance id="control-instance">
@@ -82,6 +84,8 @@
             <xf:action ev:event="idega-submit-error" id="idega-submission-error">
                 <xf:message level="modeless" ref="instance('localized_strings')/submission-error_message[@lang=instance('localized_strings')/current_language]"/>
             </xf:action>
+            <xf:bind id="fbc_90_bind" nodeset="Process_is_public_fbc_90" readonly="instance('control-instance')/readonly = 'true'"
+            	required="instance('control-instance')/required = 'true'" type="xs:string"/>
             <xf:bind id="fbc_50_bind" nodeset="Uppdragsnamn_fbc_50"
                 readonly="instance('control-instance')/readonly = 'true'"
                 required="instance('control-instance')/required = 'true'" type="xs:string"/>
@@ -373,12 +377,9 @@
             <xf:instance id="locale-instance" relevant="false()" src="context:fb-afk-loginSession.currentLocale"/>
             <xf:action ev:event="xforms-ready">
                 <idega:dispatch name="idega-xforms-ready" target="//h:body//*[starts-with(@id, 'fbc_')]"/>
-                <xf:setvalue model="data_model"
-                    ref="instance('localized_strings')/current_language" value="instance('locale-instance')/fb-afk-loginSession.currentLocale"/>
-                <xf:setvalue
-                    if="instance('control-instance')/generatePdf='true'"
-                    model="submission_model"
-                    ref="instance('control-instance')/required" value="'false'"/>
+                <xf:setvalue model="data_model" ref="instance('localized_strings')/current_language" value="instance('locale-instance')/fb-afk-loginSession.currentLocale"/>
+                <xf:setvalue if="instance('control-instance')/generatePdf='true'" model="submission_model" ref="instance('control-instance')/required" value="'false'"/>
+                <xf:setvalue model="submission_model" ref="instance('data-instance')/Process_is_public_fbc_90" value="'true'" /> 
             </xf:action>
             
             <xf:instance id="fbc_80_lds" xmlns="">
@@ -464,6 +465,7 @@
                 <xf:setvalue bind="fbc_69_bind"
                     id="fbc_69-autofill-setvalue"
                     model="submission_model" value="instance('fbc_69_autofill-instance')/fb-afk-collection-string-loginSession.user.emails.emailAddress"/>
+
             </xf:action>
         </xf:model>
     </head>

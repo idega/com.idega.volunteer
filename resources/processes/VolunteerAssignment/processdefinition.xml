@@ -43,7 +43,7 @@
   
   <event type="process-start">
         <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
-            <handlerName>rolesAssignmentHandler</handlerName>
+            <handlerName>rightsManagementRolesAssignmentHandler</handlerName>
                 <propertyMap key-type='java.lang.String' value-type='java.lang.String'>
                     <entry>
                         <key>assignmentExpression</key>
@@ -94,6 +94,7 @@
 			<variable name="list_volunteerAssignmentVolunteers"					access="write"></variable>
 			<variable name="list_volunteerAssignmentProposedVolunteers"			access="write"></variable>
 			<variable name="list_volunteerAssignmentRegistered"					access="write,required"></variable>
+			<variable name="string_processIsPublic" 							access="write"></variable>
          </controller>
       </task>
       <transition to="fork3"></transition>
@@ -496,6 +497,7 @@
 				<variable name="list_volunteerAssignmentVolunteers"					access="read,write"></variable>
 				<variable name="list_volunteerAssignmentProposedVolunteers"			access="read,write"></variable>
 				<variable name="list_volunteerAssignmentRegistered"					access="read,write,required"></variable>
+				<variable name="string_processIsPublic" 							access="read,write"></variable>
 	         </controller>
          </task>
 		<transition to="informFork"></transition>
