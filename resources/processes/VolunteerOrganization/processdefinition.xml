@@ -57,17 +57,17 @@
                 </entry>
             </propertyMap>
         </action>
-    </event>
+   </event>
   
    <start-state name="submitNewCase">
-      <task name="Submit New Case">
+      <task name="Create volunteer organization">
          <assignment class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
 				<handlerName>jsonAssignmentHandler</handlerName>
 				<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
 					<entry><key>expression</key>
 						<value>
 				             {taskAssignment: {roles: {role: [
-				                   {roleName: "volunteer_admin", accesses: {access: [read]}},
+				                   {roleName: "volunteer_admin", accesses: {access: [read, write]}},
 				                   {roleName: "bpm_volunteerOrganization_owner", accesses: {access: [read, write]}, assignIdentities: {string: ["current_user"]}},
 				                   {roleName: "volunteer_organization", accesses: {access: [read]}}
 		               		 ]} }}
@@ -76,38 +76,22 @@
 			</propertyMap>
 		 </assignment>
          <controller>
-            <variable name="string_ownerKennitala" 						access="write,required"></variable>
-            <variable name="string_ownerEmailAddress" 					access="write"></variable>
-            <variable name="string_ownerAddress" 						access="write,required"></variable>
-            <variable name="string_ownerPostCode" 						access="write,required"></variable>
-            <variable name="string_ownerMunicipality" 					access="write"></variable>
-            <variable name="string_ownerPhone" 							access="write,required"></variable>
-			<variable name="string_ownerFullName"						access="write,required"></variable>
-			<variable name="string_ownerAverageNumberOfEmployees"		access="write"></variable>
-			<variable name="string_ownerContactPerson"					access="write,required"></variable>
-			<variable name="string_caseDescription"						access="write,required"></variable>
-			<variable name="string_ownerAppliedProjectDescription"		access="write"></variable>
-			<variable name="string_ownerResult"							access="write"></variable>
-			<variable name="string_ownerApplicantBackground"			access="write"></variable>
-			<variable name="string_ownerPotentialDevelopment"			access="write"></variable>
-			<variable name="string_ownerProjectPresentStatus"			access="write"></variable>
-			<variable name="string_ownerBusinessConceptDetail"			access="write"></variable>
-			<variable name="string_ownerCompetitions"					access="write"></variable>
-			<variable name="objlist_ownerCostsAndMainTasks"				access="write"></variable>
-			<variable name="objlist_ownerFinanceOfTasks"				access="write"></variable>
-			<variable name="list_ownerInformationAboutProgram"			access="write"></variable>
-			<variable name="string_ownerMobile"							access="write"></variable>
-			<variable name="string_ownerFax"							access="write"></variable>
-			<variable name="string_ownerBusinessConcept"				access="write,required"></variable>
-			<variable name="string_ownerCustomInformationAboutProgram"	access="write"></variable>
-			<variable name="files_ownerAttachments"						access="write"></variable>
-			<variable name="string_caseIdentifier"						access="write"></variable>
-			<variable name="string_ownerOther"							access="write"></variable>
-			<variable name="string_ownerTotalCost"						access="write"></variable>
-			<variable name="string_ownerGrantAmount"               	    access="write"></variable>
-			<variable  name="string_ownerGender"						access="write,required"></variable>
-			
-			
+            <variable name="string_caseDescription" 									access="write,required"></variable>
+            <variable name="string_volunteerOrganizationWorkplace" 						access="write,required"></variable>
+            <variable name="string_volunteerOrganizationTelephoneNumber" 				access="write"></variable>
+            <variable name="string_volunteerOrganizationAddress" 						access="write,required"></variable>
+            <variable name="string_volunteerOrganizationPostalCode" 					access="write,required"></variable>
+            <variable name="string_volunteerOrganizationCity" 							access="write,required"></variable>
+			<variable name="string_volunteerOrganizationEmail"							access="write"></variable>
+			<variable name="string_volunteerOrganizationHeadquarter"					access="write"></variable>
+			<variable name="string_volunteerOrganizationContactPersonTelephoneNumber"	access="write,required"></variable>
+			<variable name="string_volunteerOrganizationContactPersonEmail"				access="write,required"></variable>
+			<variable name="string_volunteerOrganizationContactPersonName"				access="write,required"></variable>
+			<variable name="string_volunteerOrganizationContactPersonTelephoneNumber2"	access="write"></variable>
+			<variable name="string_volunteerOrganizationIdNumber"						access="write,required"></variable>
+			<variable name="string_volunteerOrganizationType"							access="write,required"></variable>
+			<variable name="string_volunteerOrganizationRegistered"						access="write"></variable>
+			<variable name="string_volunteerOrganizationContactPersonId"				access="write,required"></variable>
          </controller>
       </task>
       <transition to="fork3"></transition>
@@ -127,11 +111,11 @@
 			        	<value>
 			        		${
 			        		Map subjectMap = new HashMap();
-			        		subjectMap.put("en", "New case has been created");
+			        		subjectMap.put("sv_SE", "New volunteer organization has been created");
+			        		subjectMap.put("en", "New volunteer organization has been created");
 			        		subjectMap.put("is_IS", "N\u00FDtt m\u00E1l stofna\u00F0");
 			        		return subjectMap;
 			        		}
-			        		
                 		</value>
                 	</entry>
                 	<entry>
@@ -139,7 +123,8 @@
 			        	<value>
 			        		${
 			        		Map messageMap = new HashMap();
-			        		messageMap.put("en", "Hello, {0}. New {1} case with identifier {2} and description {3} has been created.");
+			        		messageMap.put("sv_SE", "Hello, {0}. New {1} volunteer organization with identifier {2} and description {3} has been created.");
+			        		messageMap.put("en", "Hello, {0}. New {1} volunteer organization with identifier {2} and description {3} has been created.");
 			        		messageMap.put("is_IS", "S\u00E6l/ll, {0}. N\u00FDtt m\u00E1l \u00ED flokknum {1} me\u00F0 nafni\u00F0 {3} og m\u00E1lsn\u00FAmeri\u00F0 {2} hefur veri\u00F0 stofna\u00F0.");
 			        		return messageMap;
 			        		}
@@ -166,8 +151,6 @@
 
 	<end-state name="end-state1"></end-state>
 
-	<end-state name="end-state2"></end-state>
-
 	<event type="handlerAssignedToCase">
         <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
 				<handlerName>caseHandlerAssignmentHandler</handlerName>
@@ -179,11 +162,11 @@
 			        	<value>
 			        		${
 			        		Map subjectMap = new HashMap();
-			        		subjectMap.put("en", "Handler was assigned to the case");
+			        		subjectMap.put("sv_SE", "Handler was assigned to the volunteer organization");
+			        		subjectMap.put("en", "Handler was assigned to the volunteer organization");
 			        		subjectMap.put("is_IS", "M\u00E1li\u00F0 \u00FEitt hefur fengi\u00F0 umsj\u00F3narmann");
 			        		return subjectMap;
 			        		}
-			        		
                 		</value>
                 	</entry>
                 	<entry>
@@ -191,7 +174,8 @@
 			        	<value>
 			        		${
 			        		Map messageMap = new HashMap();
-			        		messageMap.put("en", "Hi, {0}.\n Handler {1} was assigned to the case {2} with identifier {3} and description {4}");
+			        		messageMap.put("sv_SE", "Hi, {0}.\n Handler {1} was assigned to the volunteer organization {2} with identifier {3} and description {4}");
+			        		messageMap.put("en", "Hi, {0}.\n Handler {1} was assigned to the volunteer organization {2} with identifier {3} and description {4}");
 			        		messageMap.put("is_IS", "S\u00E6l/ll, {0}.\n {1} hefur teki\u00F0 a\u00F0 s\u00E9r m\u00E1l \u00ED flokknum \"{2}\" me\u00F0 nafni\u00F0 \"{4}\" og m\u00E1lsn\u00FAmeri\u00F0 \"{3}\"");
 			        		return messageMap;
 			        		}
@@ -217,11 +201,11 @@
 			        	<value>
 			        		${
 			        		Map subjectMap = new HashMap();
-			        		subjectMap.put("en", "Handler was unassigned from the case");
+			        		subjectMap.put("sv_SE", "Handler was unassigned from the volunteer organization");
+			        		subjectMap.put("en", "Handler was unassigned from the volunteer organization");
 			        		subjectMap.put("is_IS", "Umsj\u00F3narmannaskipti");
 			        		return subjectMap;
 			        		}
-			        		
                 		</value>
                 	</entry>
                 	<entry>
@@ -229,7 +213,8 @@
 			        	<value>
 			        		${
 			        		Map messageMap = new HashMap();
-			        		messageMap.put("en", "Hi, {0}.\n Handler was unassigned from the case {1} with identifier {2} and description {3}");
+			        		messageMap.put("sv_SE", "Hi, {0}.\n Handler was unassigned from the volunteer organization {1} with identifier {2} and description {3}");
+			        		messageMap.put("en", "Hi, {0}.\n Handler was unassigned from the volunteer organization {1} with identifier {2} and description {3}");
 			        		messageMap.put("is_IS", "S\u00E6l/ll, {0}.\n Umsj\u00F3narmannaskipti hafa \u00E1tt s\u00E9r sta\u00F0 fyrir m\u00E1l \u00ED flokknum \"{1}\" me\u00F0 nafni\u00F0 \"{3}\" og m\u00E1lsn\u00FAmeri\u00F0 \"{2}\". N\u00FDr umsj\u00F3narma\u00F0ur tekur vi\u00F0.");
 			        		return messageMap;
 			        		}
@@ -249,10 +234,9 @@
         <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
 			<handlerName>casesStatusHandler</handlerName>
 			<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
-			   	   	<entry><key>caseStatusMappedName</key><value>caseStatusInProgress</value></entry>
+			   	<entry><key>caseStatusMappedName</key><value>caseStatusInProgress</value></entry>
 			  	<entry><key>ifCaseStatusMappedName</key><value>caseStatusOpened</value></entry>
 			  	<entry><key>processInstanceId</key><value>#{mainProcessInstanceId}</value></entry>
-		
 			</propertyMap>
 		</action>
     </event>
@@ -260,7 +244,6 @@
 		<transition to="completeProcess"></transition>
 		<transition to="createOrganization" name="to createOrganization"></transition>
 		<transition to="editOrganization" name="to editOrganization"></transition>
-		<transition to="disableOrganization" name="to disableOrganization"></transition>
 	</fork>
    <node name="endCaseProcess">
       <event type="node-leave">
@@ -431,11 +414,11 @@
 			        	<value>
 			        		${
 			        		Map subjectMap = new HashMap();
-			        		subjectMap.put("en", "Case created successfully!");
+			        		subjectMap.put("sv_SE", "Volunteer organization created successfully!");
+			        		subjectMap.put("en", "Volunteer organization created successfully!");
 			        		subjectMap.put("is_IS", "\u00DEakka \u00FE\u00E9r fyrir, n\u00FDtt m\u00E1l hefur veri\u00F0 stofna\u00F0 og ver\u00F0ur afgreitt eins flj\u00F3tt og au\u00F0i\u00F0 er.");
 			        		return subjectMap;
 			        		}
-			        		
                 		</value>
                 	</entry>
                 	<entry>
@@ -443,7 +426,8 @@
 			        	<value>
 			        		${
 			        		Map messageMap = new HashMap();
-			        		messageMap.put("en", "Hello, {0}. You have successfully created case {1} with identifier {2} and description {3}. We are hopeful that your case will be handled soon. Good luck!");
+			        		messageMap.put("sv_SE", "Hello, {0}. You have successfully created a volunteer organization {1} with identifier {2} and description {3}.");
+			        		messageMap.put("en", "Hello, {0}. You have successfully created a volunteer organization {1} with identifier {2} and description {3}.");
 			        		messageMap.put("is_IS", "S\u00E6l/ll, {0}. \u00DE\u00FA hefur n\u00FA send inn ums\u00F3kn \u00ED flokknum {1} me\u00F0 m\u00E1lsn\u00FAmeri\u00F0 \"{2}\" og nafni\u00F0 \"{3}\" . M\u00E1l \u00FEitt ver\u00F0ur afgreitt eins flj\u00F3tt og au\u00F0i\u00F0 er.");
 			        		return messageMap;
 			        		}
@@ -463,19 +447,54 @@
 	</node>
 
 	<node name="createOrganization">
+		<action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+			<handlerName>volunteerOrganizationHandler</handlerName>
+			<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+				<entry>
+			    	<key>processInstanceId</key>
+			       	<value>#{mainProcessInstanceId}</value>
+                </entry>
+            </propertyMap>
+         </action>
 		<transition to="end-state1"></transition>
 	</node>
 
 	<task-node name="editOrganization">
+		<task name="Edit volunteer organization" priority="-1">
+			<assignment class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+					<handlerName>jsonAssignmentHandler</handlerName>
+					<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+						<entry><key>expression</key>
+							<value>
+					             {taskAssignment: {roles: {role: [
+					                   {roleName: "volunteer_admin", accesses: {access: [read, write]}},
+					                   {roleName: "bpm_volunteerOrganization_owner", accesses: {access: [read, write]}, assignIdentities: {string: ["current_user"]}},
+					                   {roleName: "volunteer_organization", accesses: {access: [read, write]}}
+			               		 ]} }}
+				            </value>
+						</entry>
+				</propertyMap>
+			 </assignment>
+	         <controller>
+	            <variable name="string_caseDescription" 									access="read,write,required"></variable>
+	            <variable name="string_volunteerOrganizationWorkplace" 						access="read,write,required"></variable>
+	            <variable name="string_volunteerOrganizationTelephoneNumber" 				access="read,write"></variable>
+	            <variable name="string_volunteerOrganizationAddress" 						access="read,write,required"></variable>
+	            <variable name="string_volunteerOrganizationPostalCode" 					access="read,write,required"></variable>
+	            <variable name="string_volunteerOrganizationCity" 							access="read,write,required"></variable>
+				<variable name="string_volunteerOrganizationEmail"							access="read,write"></variable>
+				<variable name="string_volunteerOrganizationHeadquarter"					access="read,write"></variable>
+				<variable name="string_volunteerOrganizationContactPersonTelephoneNumber"	access="read,write,required"></variable>
+				<variable name="string_volunteerOrganizationContactPersonEmail"				access="read,write,required"></variable>
+				<variable name="string_volunteerOrganizationContactPersonName"				access="read,write,required"></variable>
+				<variable name="string_volunteerOrganizationContactPersonTelephoneNumber2"	access="read,write"></variable>
+				<variable name="string_volunteerOrganizationIdNumber"						access="read,write,required"></variable>
+				<variable name="string_volunteerOrganizationType"							access="read,write,required"></variable>
+				<variable name="string_volunteerOrganizationRegistered"						access="read,write"></variable>
+				<variable name="string_volunteerOrganizationContactPersonId"				access="read,write,required"></variable>
+	         </controller>
+         </task>
 		<transition to="createOrganization"></transition>
-	</task-node>
-
-	<task-node name="disableOrganization">
-		<transition to="disableOrganizationData"></transition>
-	</task-node>
-
-	<task-node name="disableOrganizationData">
-		<transition to="end-state2"></transition>
 	</task-node>
 	
 	<idg:roles xmlns:idg="http://idega.com/bpm">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="GenericProcess" width="1119" height="829">
+<root-container name="VolunteerOrganization" width="1119" height="829">
   <node name="submitNewCase" x="328" y="-144" width="203" height="32">
     <edge>
       <label x="-16" y="-9"/>
@@ -13,10 +13,8 @@
   </node>
   <node name="end" x="520" y="658" width="24" height="25"/>
   <node name="emailsFetcherEnd" x="755" y="65" width="23" height="23"/>
+  <node name="end-state1" x="1043" y="365" width="26" height="23"/>
   <node name="fork1" x="511" y="304" width="24" height="21">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
     <edge>
       <label x="5" y="-10"/>
     </edge>
@@ -85,19 +83,7 @@
       <label x="5" y="-10"/>
     </edge>
   </node>
-  <node name="end-state1" x="1043" y="365" width="26" height="23"/>
   <node name="editOrganization" x="729" y="221" width="132" height="36">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-  </node>
-  <node name="disableOrganization" x="103" y="284" width="132" height="36">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-  </node>
-  <node name="end-state2" x="146" y="443" width="26" height="24"/>
-  <node name="disableOrganizationData" x="92" y="358" width="132" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>

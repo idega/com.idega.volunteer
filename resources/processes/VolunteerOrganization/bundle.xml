@@ -11,10 +11,7 @@
         <task name="Edit volunteer organization" order="0">
             <viewResource resourceIdentifier="forms/enterApplication.xhtml" viewType="xforms" viewResourceType="xforms" />
         </task>
-        <task name="Disable volunteer organization" order="1">
-            <viewResource resourceIdentifier="forms/disableOrganization.xhtml" viewType="xforms" viewResourceType="xforms" />
-        </task>
-        <task name="Complete process" order="2">
+        <task name="Complete process" order="1">
             <viewResource resourceIdentifier="forms/completeProcess.xhtml" viewType="xforms" viewResourceType="xforms" />
         </task>
     </tasks>

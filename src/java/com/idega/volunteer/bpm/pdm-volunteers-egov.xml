@@ -2,4 +2,5 @@
 
 <processes>
     <processBundle bundle="com.idega.volunteer" processBundleLocationWithinBundle="resources/processes/VolunteerAssignment/" autoload="true" version="1" />
+    <processBundle bundle="com.idega.volunteer" processBundleLocationWithinBundle="resources/processes/VolunteerOrganization/" autoload="true" version="1" />
 </processes>

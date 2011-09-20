@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import com.idega.company.event.CompanyCreatedEvent;
 import com.idega.core.business.DefaultSpringBean;
 import com.idega.event.UserCreatedEvent;
+import com.idega.idegaweb.IWResourceBundle;
 import com.idega.user.business.GroupBusiness;
 import com.idega.user.business.UserBusiness;
 import com.idega.user.data.Group;
@@ -107,18 +108,21 @@ public class VolunteerServices extends DefaultSpringBean implements ApplicationL
 		return allVolunteers;
 	}
 	
-	private void addUserToGroup(String groupName, User user, String groupNameToRemoveFrom) {
+	public void addUserToGroup(String groupName, User user, String groupNameToRemoveFrom) {
 		if (StringUtil.isEmpty(groupName) || user == null)
 			return;
 		
 		GroupBusiness groupBusiness = getServiceInstance(GroupBusiness.class);
-		Collection<Group> groups = getGroupsByName(groupBusiness, groupName);
-		if (!ListUtil.isEmpty(groups)) {
-			for (Group group: groups) {
-				try {
-					groupBusiness.addUser(Integer.valueOf(group.getId()), user);
-				} catch (Exception e) {
-					getLogger().log(Level.WARNING, "Error adding user " + user + " to the group: " + group, e);
+		Collection<Group> groups = null;
+		if (!StringUtil.isEmpty(groupName)) {
+			groups = getGroupsByName(groupBusiness, groupName);
+			if (!ListUtil.isEmpty(groups)) {
+				for (Group group: groups) {
+					try {
+						groupBusiness.addUser(Integer.valueOf(group.getId()), user);
+					} catch (Exception e) {
+						getLogger().log(Level.WARNING, "Error adding user " + user + " to the group: " + group, e);
+					}
 				}
 			}
 		}
@@ -162,5 +166,19 @@ public class VolunteerServices extends DefaultSpringBean implements ApplicationL
 			addUserToGroup(VolunteerConstants.GROUP_VOLUNTEERS, volunteer, null);
 			return;
 		}
+	}
+	
+	public Map<Locale, Map<String, String>> getVolunteerOrganizationTypes() {
+		Map<Locale, Map<String, String>> types = new HashMap<Locale, Map<String,String>>();
+		
+		Map<String, String> localizedTypes = new HashMap<String, String>();
+		types.put(getCurrentLocale(), localizedTypes);
+		
+		IWResourceBundle iwrb = getResourceBundle(getBundle(VolunteerConstants.IW_BUNDLE_IDENTIFIER));
+		localizedTypes.put("management", iwrb.getLocalizedString("org_type.management", "Management"));
+		localizedTypes.put("enterprise", iwrb.getLocalizedString("org_type.eterprise", "Enterprise"));
+		localizedTypes.put("association", iwrb.getLocalizedString("org_type.association", "Association"));
+		
+		return types;
 	}
 }
