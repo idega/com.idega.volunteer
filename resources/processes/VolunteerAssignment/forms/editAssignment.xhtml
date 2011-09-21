@@ -31,6 +31,8 @@
                     <Utfrandetid_fbc_74 mapping="string_volunteerAssignmentExpectedExecutionTime"/>
                     <Beskrivning_av_uppdrag_fbc_79 mapping="string_volunteerAssignmentDescription"/>
                     <Uppdragstyp_fbc_80 mapping="list_volunteerAssignmentType"/>
+                    <Frivillig_fbc_81 mapping="list_volunteerAssignmentVolunteers"/>
+                    <Frivilligfrslag_fbc_82 mapping="list_volunteerAssignmentProposedVolunteers"/>
                     <Registrerad_fbc_83 mapping="list_volunteerAssignmentRegistered"/>
                     
                     <Process_is_public_fbc_90 mapping="string_processIsPublic"/>
@@ -133,6 +135,10 @@
                 nodeset="Beskrivning_av_uppdrag_fbc_79"
                 readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
             <xf:bind id="fbc_80_bind" nodeset="Uppdragstyp_fbc_80" readonly="instance('control-instance')/readonly = 'true'" required="instance('control-instance')/required = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_81_bind" nodeset="Frivillig_fbc_81"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
+            <xf:bind id="fbc_82_bind" nodeset="Frivilligfrslag_fbc_82"
+                readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
             <xf:bind id="fbc_83_bind" nodeset="Registrerad_fbc_83"
                 readonly="instance('control-instance')/readonly = 'true'"
                 required="instance('control-instance')/required = 'true'" type="xs:string"/>
@@ -383,6 +389,20 @@
                 <ext_src/>
             </xf:instance>
             
+            <xf:instance id="fbc_81_lds" xmlns="">
+                <local_src />
+            </xf:instance>
+            <xf:instance id="fbc_81_eds" xmlns="" src="expXml:volunteerServices.volunteers">
+                <ext_src/>
+            </xf:instance>
+            
+            <xf:instance id="fbc_82_lds" xmlns="">
+                <local_src />
+            </xf:instance>
+            <xf:instance id="fbc_82_eds" xmlns="" src="expXml:volunteerServices.suggestedVolunteers">
+                <ext_src/>
+            </xf:instance>
+            
             <xf:instance id="fbc_83_lds" xmlns="">
                 <local_src>
                     <localizedEntries lang="en">
@@ -623,6 +643,28 @@
                             </idega:validator>
                             <xf:alert ref="instance('error-instance')/error[@for='fbc_69']"/>
                         </xf:input>
+                        <xf:select appearance="minimal"
+                            bind="fbc_81_bind" id="fbc_81" type="fbc_multiple_select_minimal">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_81-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:itemset model="data_model" nodeset="instance('fbc_81_eds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                                <xf:label ref="itemLabel"/>
+                                <xf:value ref="itemValue"/>
+                            </xf:itemset>
+                            <xf:help>
+                                <xf:output ref="instance('localized_strings')/fbc_81-help[@lang=instance('localized_strings')/current_language]"/>
+                            </xf:help>
+                        </xf:select>
+                        <xf:select appearance="minimal"
+                            bind="fbc_82_bind" id="fbc_82" type="fbc_multiple_select_minimal">
+                            <xf:label model="data_model" ref="instance('localized_strings')/fbc_82-label[@lang=instance('localized_strings')/current_language]"/>
+                            <xf:itemset model="data_model" nodeset="instance('fbc_82_eds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                                <xf:label ref="itemLabel"/>
+                                <xf:value ref="itemValue"/>
+                            </xf:itemset>
+                            <xf:help>
+                                <xf:output ref="instance('localized_strings')/fbc_82-help[@lang=instance('localized_strings')/current_language]"/>
+                            </xf:help>
+                        </xf:select>
                         <xf:select appearance="full" bind="fbc_83_bind"
                             id="fbc_83" type="fbc_multiple_select">
                             <xf:label model="data_model" ref="instance('localized_strings')/fbc_83-label[@lang=instance('localized_strings')/current_language]"/>

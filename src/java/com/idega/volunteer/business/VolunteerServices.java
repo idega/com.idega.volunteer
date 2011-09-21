@@ -33,21 +33,6 @@ import com.idega.volunteer.VolunteerConstants;
 @Service("volunteerServices")
 @Scope(BeanDefinition.SCOPE_SINGLETON)
 public class VolunteerServices extends DefaultSpringBean implements ApplicationListener {
-
-	public Map<Locale, Map<String, String>> getVolunteerAssignmentTypes() {
-		Map<Locale, Map<String, String>> allTypes = new HashMap<Locale, Map<String,String>>();
-		
-		//	TODO: use real types
-		Map<String, String> types = new HashMap<String, String>();
-		allTypes.put(getCurrentLocale(), types);
-		types.put("1", "Type 1");
-		types.put("2", "Type 2");
-		types.put("3", "Type 3");
-		types.put("4", "Type 4");
-		types.put("5", "Type 5");
-		
-		return allTypes;
-	}
 	
 	public Map<Locale, Map<String, String>> getVolunteers() {
 		Map<Locale, Map<String, String>> allVolunteers = new HashMap<Locale, Map<String,String>>();

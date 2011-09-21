@@ -6,7 +6,7 @@
          <script>
             <expression>
                 String handlerRoleName = "bpm_volunteer_assignment_handler";
-                String ownerRoleName = "bpm_volunteer_assignment_owner";
+                String ownerRoleName = "volunteer_organization";
                 String caseHandlerRoleName = "bpm_volunteer_assignment_caseHandler";
                 String invitedRoleName = "bpm_volunteer_assignment_invited";
                 
@@ -51,7 +51,7 @@
                             {rightsAssignment: {roles: {role: [
                                 {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [modifyPermissions, caseHandler]}},
                                 {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [seeContacts]}, rolesContacts: {string: ["all"]}},
-                                {roleName: "bpm_volunteer_assignment_owner", accesses: {access: [seeContacts]}, rolesContacts: {string: ["bpm_volunteer_assignment_caseHandler"]}}
+                                {roleName: "volunteer_organization", accesses: {access: [seeContacts]}, rolesContacts: {string: ["bpm_volunteer_assignment_caseHandler"]}}
                             ]} }}
                         </value>
                 </entry>
@@ -67,8 +67,8 @@
 					<entry><key>expression</key>
 						<value>
 				             {taskAssignment: {roles: {role: [
-				                   {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read, write]}},
-				                   {roleName: "bpm_volunteer_assignment_owner", accesses: {access: [read, write]}, assignIdentities: {string: ["current_user"]}},
+				                   {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read]}},
+				                   {roleName: "volunteer_organization", accesses: {access: [read, write]}, assignIdentities: {string: ["current_user"]}},
 				                   {roleName: "bpm_volunteer_assignment_invited", accesses: {access: [read]}}
 		               		 ]} }}
 			            </value>
@@ -91,8 +91,6 @@
 			<variable name="string_volunteerAssignmentExpectedExecutionTime"	access="write"></variable>
 			<variable name="string_volunteerAssignmentDescription"				access="write,required"></variable>
 			<variable name="list_volunteerAssignmentType"						access="write,required"></variable>
-			<variable name="list_volunteerAssignmentVolunteers"					access="write"></variable>
-			<variable name="list_volunteerAssignmentProposedVolunteers"			access="write"></variable>
 			<variable name="list_volunteerAssignmentRegistered"					access="write,required"></variable>
 			<variable name="string_processIsPublic" 							access="write"></variable>
          </controller>
@@ -190,7 +188,7 @@
 			        		{list: {mv: [{type: "bean", value: "user.name"}, {type: "roleUsers", value: "{role: {roleName: \"bpm_volunteer_assignment_caseHandler\"}}"},  {type: "bean", value: "piw.processDefinitionW.startTaskName"}, {type: "bean", value: "piw.processIdentifier"}, {type: "bean", value: "piw.processDescription"}]}}
                 		</value>
                 	</entry>
-                	<entry><key>sendToRoles</key><value>bpm_volunteer_assignment_owner bpm_volunteer_assignment_handler</value></entry>
+                	<entry><key>sendToRoles</key><value>volunteer_organization bpm_volunteer_assignment_handler</value></entry>
 			    </propertyMap>
 		 </action>
     </event>
@@ -294,7 +292,7 @@
 						<value>
 			                {taskAssignment: {roles: {role: [
 			                    {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read, write]}},
-			                    {roleName: "bpm_volunteer_assignment_owner", accesses: {access: [read, write]}},
+			                    {roleName: "volunteer_organization", accesses: {access: [read, write]}},
 			                    {roleName: "bpm_volunteer_assignment_invited", accesses: {access: [read]}}
 		                    ]} }}
 			            </value>
@@ -335,7 +333,7 @@
                 s_upd.setGenderName(userGenderName);
                 
                 s_roleExp = "{role: {roleName: \"bpm_volunteer_assignment_handler\"}}";
-                s_assigneeRoleExp = "{role: {roleName: \"bpm_volunteer_assignment_owner\"}}";
+                s_assigneeRoleExp = "{role: {roleName: \"volunteer_organization\"}}";
             </expression>
             <variable name='myProcessInstanceId' access='write' mapped-name='s_processInstanceId' />
             <variable name='ownerUserPersonalData' access='write' mapped-name='s_upd' />
@@ -379,7 +377,7 @@
                 s_upd.setUserPhone(userPhone);
                 s_upd.setGenderName(userGenderName);
                 
-                s_assigneeRoleExp = "{role: {roleName: \"bpm_volunteer_assignment_owner\"}}";
+                s_assigneeRoleExp = "{role: {roleName: \"volunteer_organization\"}}";
             </expression>
             <variable name='myProcessInstanceId' access='write' mapped-name='s_processInstanceId' />
             <variable name='ownerUserPersonalData' access='write' mapped-name='s_upd' />
@@ -438,7 +436,7 @@
 			        		{list: {mv: [{type: "bean", value: "user.name"}, {type: "bean", value: "piw.processDefinitionW.startTaskName"}, {type: "bean", value: "piw.processIdentifier"}, {type: "bean", value: "piw.processDescription"}, {type: "bean", value: "caseUser.urlToTheCase"}]}}
                 		</value>
                 	</entry>
-                	<entry><key>sendToRoles</key><value>bpm_volunteer_assignment_owner</value></entry>
+                	<entry><key>sendToRoles</key><value>volunteer_organization</value></entry>
 			    </propertyMap>
 		 </action>
 		</event>
@@ -471,7 +469,54 @@
 							<value>
 					             {taskAssignment: {roles: {role: [
 					                   {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read, write]}},
-					                   {roleName: "bpm_volunteer_assignment_owner", accesses: {access: [read, write]}, assignIdentities: {string: ["current_user"]}},
+					                   {roleName: "volunteer_organization", accesses: {access: [read, write]}, assignIdentities: {string: ["current_user"]}},
+					                   {roleName: "bpm_volunteer_assignment_invited", accesses: {access: [read]}}
+			               		 ]} }}
+				            </value>
+						</entry>
+				</propertyMap>
+			 </assignment>
+	         <controller>
+	            <variable name="string_caseDescription" 							access="read,write,required"></variable>
+	            <variable name="string_volunteerAssignmentCreator" 					access="read,write,required"></variable>
+	            <variable name="string_volunteerAssignmentArea" 					access="read,write,required"></variable>
+	            <variable name="date_volunteerAssignmentDate" 						access="read,write"></variable>
+	            <variable name="date_volunteerAssignmentCreationDate" 				access="read,write,required"></variable>
+	            <variable name="date_volunteerAssignmentExpireDate" 				access="read,write,required"></variable>
+				<variable name="string_volunteerAssignmentTime"						access="read,write,required"></variable>
+				<variable name="string_volunteerAssignmentContactName"				access="read,write,required"></variable>
+				<variable name="string_volunteerAssignmentContactPhone1"			access="read,write,required"></variable>
+				<variable name="string_volunteerAssignmentContactPhone2"			access="read,write"></variable>
+				<variable name="string_volunteerAssignmentContactEmail"				access="read,write,required"></variable>
+				<variable name="string_volunteerAssignmentNumberOfVolunteers"		access="read,write,required"></variable>
+				<variable name="string_volunteerAssignmentExpectedExecutionTime"	access="read,write"></variable>
+				<variable name="string_volunteerAssignmentDescription"				access="read,write,required"></variable>
+				<variable name="list_volunteerAssignmentType"						access="read,write,required"></variable>
+				<variable name="list_volunteerAssignmentVolunteers"					access="read"></variable>
+				<variable name="list_volunteerAssignmentProposedVolunteers"			access="read"></variable>
+				<variable name="list_volunteerAssignmentRegistered"					access="read,write,required"></variable>
+				<variable name="string_processIsPublic" 							access="read,write"></variable>
+	         </controller>
+         </task>
+		<transition to="additionalInformationEnd"></transition>
+	</task-node>
+
+	<fork name="editFork">
+		<transition to="editVolunteerAssignment" name="toEditVolunteerAssignment"></transition>
+		<transition to="completeProcess" name="toCompleteProcess"></transition>
+		<transition to="matchVolunteers" name="to matchVolunteers"></transition>
+	</fork>
+
+	<task-node name="matchVolunteers">
+		<task name="Match volunteers" priority="-1">
+			<assignment class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+					<handlerName>jsonAssignmentHandler</handlerName>
+					<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+						<entry><key>expression</key>
+							<value>
+					             {taskAssignment: {roles: {role: [
+					                   {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read, write]}},
+					                   {roleName: "volunteer_organization", accesses: {access: [read]}, assignIdentities: {string: ["current_user"]}},
 					                   {roleName: "bpm_volunteer_assignment_invited", accesses: {access: [read]}}
 			               		 ]} }}
 				            </value>
@@ -502,12 +547,6 @@
          </task>
 		<transition to="informFork"></transition>
 	</task-node>
-
-	<fork name="editFork">
-		<transition to="editVolunteerAssignment" name="toEditVolunteerAssignment"></transition>
-		<transition to="informFork" name="toInformFork"></transition>
-		<transition to="completeProcess" name="toCompleteProcess"></transition>
-	</fork>
 	
 	<idg:roles xmlns:idg="http://idega.com/bpm">
         <role name="bpm_volunteer_assignment_caseHandler">
@@ -531,7 +570,7 @@
             <label lang="sv_SE">Inbjuden</label>
           </labels>
         </role>
-        <role name="bpm_volunteer_assignment_owner">
+        <role name="volunteer_organization">
           <labels>
             <label lang="en">owner</label>
             <label lang="is_IS">Sendandi</label>
