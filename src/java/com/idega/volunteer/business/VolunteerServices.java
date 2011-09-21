@@ -25,6 +25,7 @@ import com.idega.user.business.GroupBusiness;
 import com.idega.user.business.UserBusiness;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
+import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
 import com.idega.volunteer.VolunteerConstants;
@@ -180,5 +181,33 @@ public class VolunteerServices extends DefaultSpringBean implements ApplicationL
 		localizedTypes.put("association", iwrb.getLocalizedString("org_type.association", "Association"));
 		
 		return types;
+	}
+	
+	public String getCurrentDate() {
+		IWTimestamp date = IWTimestamp.RightNow();
+		return date.getLocaleDate(getCurrentLocale());
+	}
+	
+	public Map<Locale, Map<String, String>> getVolunteerAreasOfInterest() {
+		Map<Locale, Map<String, String>> areas = new HashMap<Locale, Map<String,String>>();
+		
+		Map<String, String> localizedAreas = new HashMap<String, String>();
+		areas.put(getCurrentLocale(), localizedAreas);
+		
+		IWResourceBundle iwrb = getResourceBundle(getBundle(VolunteerConstants.IW_BUNDLE_IDENTIFIER));
+		localizedAreas.put("all", iwrb.getLocalizedString("all", "All"));
+		localizedAreas.put("animals", iwrb.getLocalizedString("animals", "Animals"));
+		localizedAreas.put("sports", iwrb.getLocalizedString("sports", "Sports"));
+		localizedAreas.put("culture", iwrb.getLocalizedString("culture", "Culture"));
+		localizedAreas.put("seniors_older", iwrb.getLocalizedString("seniors_older", "Seniors, older"));
+		localizedAreas.put("social", iwrb.getLocalizedString("social", "Social care"));
+		localizedAreas.put("children_youth", iwrb.getLocalizedString("children_youth", "Children & Youth"));
+		localizedAreas.put("school", iwrb.getLocalizedString("school", "School"));
+		localizedAreas.put("events", iwrb.getLocalizedString("events", "Events"));
+		localizedAreas.put("association_mission", iwrb.getLocalizedString("association_mission", "Association mission"));
+		localizedAreas.put("computer_it_help", iwrb.getLocalizedString("computer_it_help", "Computer/IT Help"));
+		localizedAreas.put("other", iwrb.getLocalizedString("other", "Other"));
+		
+		return areas;
 	}
 }

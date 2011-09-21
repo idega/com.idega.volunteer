@@ -12,3 +12,16 @@ account_is_disabled=Account is disabled
 account_disabled_message=Hi {0}, \n\nYour account at {1} is currently disabled.
 account_is_enabled=Account is enabled
 account_ebabled_message=Hi {0}, \n\nYour account at {1} is currently enabled.
+
+all=Alla
+animals=Djur
+sports=Idrott
+culture=Kultur
+seniors_older=Seniorer, \u00E4ldre
+social=Socialt frivilligt arbete
+children_youth=Barn & ungdom
+school=Skola
+events=Evenemang
+association_mission=F\u00F6reningsuppdrag
+computer_it_help=Data/IT-hj\u00E4lp
+other=\u00D6vrigt

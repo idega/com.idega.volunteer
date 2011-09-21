@@ -64,10 +64,12 @@ import com.idega.volunteer.VolunteerConstants;
 import com.idega.volunteer.business.VolunteerServices;
 
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-@Service("volunteerOrganizationHandler")
+@Service(VolunteerOrganizationHandler.BEAN_NAME)
 public class VolunteerOrganizationHandler extends DefaultSpringBean implements ActionHandler {
 
 	private static final long serialVersionUID = 6422874982048806524L;
+	
+	static final String BEAN_NAME = "volunteerOrganizationHandler";
 
 	private Long processInstanceId;
 	
@@ -283,6 +285,25 @@ public class VolunteerOrganizationHandler extends DefaultSpringBean implements A
 		return null;
 	}
 	
+	public void sendMessageAccountCreated(User user, UserPersonalData upd) {
+		if (user == null || upd == null) {
+			getLogger().warning("User " + user + " or personal data " + upd + " are not provded!");
+			return;
+		}
+		
+		String password = upd.getUserPassword();
+		String userName = StringUtil.isEmpty(upd.getUserName()) ? user.getPersonalID() : upd.getUserName();
+		IWResourceBundle iwrb = getResourceBundle(getBundle(VolunteerConstants.IW_BUNDLE_IDENTIFIER));
+		String subject = iwrb.getLocalizedString("registration_successfull", "Registration successfull");
+		String text = iwrb.getLocalizedString("account_created_message", "Hello, {0}. \n\nYour registration was successful. You can login with your login name {1} and password {2} by going to {3}");
+		text = StringHandler.replace(text, "{0}", user.getName());
+		text = StringHandler.replace(text, "{1}", userName);
+		text = StringHandler.replace(text, "{2}", password);
+		text = StringHandler.replace(text, "{3}", CoreUtil.getIWContext().getDomain().getURL());
+		SendMailMessageValue message = new SendMailMessageValue(null, null, null, null, null, subject, text, null, null);
+		sendMail(user, message);
+	}
+	
 	private User createUser(ExecutionContext context) {
 		User user = getUser(context);
 		String personalId = getUserPersonalId(context);
@@ -312,17 +333,7 @@ public class VolunteerOrganizationHandler extends DefaultSpringBean implements A
 				getLogger().log(Level.WARNING, "Error creating user by personal ID: " + personalId, e);
 			}
 			
-			String password = upd.getUserPassword();
-			String userName = StringUtil.isEmpty(upd.getUserName()) ? user.getPersonalID() : upd.getUserName();
-			IWResourceBundle iwrb = getResourceBundle(getBundle(VolunteerConstants.IW_BUNDLE_IDENTIFIER));
-			String subject = iwrb.getLocalizedString("registration_successfull", "Registration successfull");
-			String text = iwrb.getLocalizedString("account_created_message", "Hello, {0}. \n\nYour registration was successful. You can login with your login name {1} and password {2} by going to {3}");
-			text = StringHandler.replace(text, "{0}", user.getName());
-			text = StringHandler.replace(text, "{1}", userName);
-			text = StringHandler.replace(text, "{2}", password);
-			text = StringHandler.replace(text, "{3}", CoreUtil.getIWContext().getDomain().getURL());
-			SendMailMessageValue message = new SendMailMessageValue(null, null, null, null, null, subject, text, null, null);
-			sendMail(user, message);
+			sendMessageAccountCreated(user, upd);
 		} else {
 			userUpdated = true;
 			if (personalId != null)
@@ -378,7 +389,7 @@ public class VolunteerOrganizationHandler extends DefaultSpringBean implements A
 		}
 	}
 	
-	private void enableOrDisableLogin(User user, boolean disable) {
+	public void enableOrDisableLogin(User user, boolean disable) {
 		LoginInfo loginInfo = LoginDBHandler.getLoginInfo(LoginDBHandler.getUserLogin(user));
 		
 		String subject = null;
