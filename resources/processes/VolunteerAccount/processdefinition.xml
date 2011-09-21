@@ -464,7 +464,7 @@
 				            </value>
 						</entry>
 				</propertyMap>
-			 </assignment>
+			</assignment>
 			<controller>
 	            <variable name="string_caseDescription" 					access="read,write,required"></variable>
 	            <variable name="string_volunteerAccountPersonalId" 			access="read,write,required"></variable>

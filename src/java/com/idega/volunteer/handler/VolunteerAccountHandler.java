@@ -11,6 +11,7 @@ import javax.ejb.FinderException;
 
 import org.jbpm.graph.def.ActionHandler;
 import org.jbpm.graph.exe.ExecutionContext;
+import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -23,6 +24,8 @@ import com.idega.data.IDOAddRelationshipException;
 import com.idega.data.IDORemoveRelationshipException;
 import com.idega.idegaweb.egov.bpm.data.CaseProcInstBind;
 import com.idega.idegaweb.egov.bpm.data.dao.CasesBPMDAO;
+import com.idega.jbpm.BPMContext;
+import com.idega.jbpm.exe.BPMFactory;
 import com.idega.jbpm.identity.UserPersonalData;
 import com.idega.jbpm.identity.authentication.CreateUserHandler;
 import com.idega.user.business.UserBusiness;
@@ -40,7 +43,25 @@ public class VolunteerAccountHandler extends DefaultSpringBean implements Action
 	private Long processInstanceId;
 	
 	@Autowired
+	private BPMFactory bpmFactory;
+	
+	@Autowired
 	private CasesBPMDAO casesDAO;
+	
+	@Autowired
+	private BPMContext bpmContext;
+	
+	private BPMFactory getBPMFactory() {
+		if (bpmFactory == null)
+			ELUtil.getInstance().autowire(this);
+		return bpmFactory;
+	}
+	
+	private BPMContext getBPMContext() {
+		if (bpmContext == null)
+			ELUtil.getInstance().autowire(this);
+		return bpmContext;
+	}
 	
 	private CasesBPMDAO getCasesDAO() {
 		if (casesDAO == null)
@@ -212,10 +233,34 @@ public class VolunteerAccountHandler extends DefaultSpringBean implements Action
 		if (user == null)
 			return null;
 		
+		try {
+			assignOwner(user);
+		} catch (Exception e) {
+			String message = "Error assigning owner (" + user + ") to the start task of a process instance (ID: " + getProcessInstanceId() + ")";
+			getLogger().log(Level.WARNING, message, e);
+			throw new RuntimeException(message);
+		}
+		
 		VolunteerOrganizationHandler volunteerHandler = ELUtil.getInstance().getBean(VolunteerOrganizationHandler.BEAN_NAME);
 		volunteerHandler.sendMessageAccountCreated(user, upd);
 		
 		return user;
+	}
+	
+	private void assignOwner(User user) throws Exception {
+		TaskInstance taskInstance = getBPMFactory()
+		        .getProcessManagerByProcessInstanceId(getProcessInstanceId())
+		        .getProcessInstance(getProcessInstanceId())
+		        .getStartTaskInstance().getTaskInstance();
+		
+		taskInstance.setActorId(user.getId());
+		getBPMContext().saveProcessEntity(taskInstance);
+		
+		CaseProcInstBind bind = getCasesDAO().getCaseProcInstBindByProcessInstanceId(getProcessInstanceId());
+		CaseBusiness caseBusiness = getServiceInstance(CaseBusiness.class);
+		Case theCase = caseBusiness.getCase(bind.getCaseId());
+		theCase.setOwner(user);
+		theCase.store();
 	}
 	
 	private void disableUser(ExecutionContext context) {

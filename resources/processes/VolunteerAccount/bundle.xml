@@ -8,7 +8,10 @@
         <task name="Create volunteer account" initial="true">
             <viewResource resourceIdentifier="forms/enterApplication.xhtml" viewType="xforms" viewResourceType="xforms" />
         </task>
-        <task name="Complete process">
+        <task name="Edit volunteer account" order="0">
+            <viewResource resourceIdentifier="forms/enterApplication.xhtml" viewType="xforms" viewResourceType="xforms" />
+        </task>
+        <task name="Complete process" order="1">
             <viewResource resourceIdentifier="forms/completeProcess.xhtml" viewType="xforms" viewResourceType="xforms" />
         </task>
     </tasks>
