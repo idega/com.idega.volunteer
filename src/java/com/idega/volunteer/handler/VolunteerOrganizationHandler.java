@@ -172,6 +172,11 @@ public class VolunteerOrganizationHandler extends DefaultSpringBean implements A
 	}
 	
 	private void updateCompany(Company company, ExecutionContext context) throws IDOLookupException, CreateException, RemoteException, FinderException {
+		String name = context.getVariable("string_caseDescription").toString();
+		company.setName(name);
+		String companyId = getCompanyId(context);
+		company.setPersonalID(companyId);
+		
 		Object phoneNumber = context.getVariable("string_volunteerOrganizationTelephoneNumber");
 		if (phoneNumber != null) {
 			Phone phone = ((PhoneHome) IDOLookup.getHome(Phone.class)).create();
@@ -299,9 +304,10 @@ public class VolunteerOrganizationHandler extends DefaultSpringBean implements A
 			if (email != null)
 				upd.setUserEmail(email.toString());
 			
-			getUserHandler().setPublishEvent(false);
+			CreateUserHandler userHandler = getUserHandler();
+			userHandler.setPublishEvent(false);
 			try {
-				user = getUserHandler().createUser(upd);
+				user = userHandler.createUser(upd);
 			} catch (Exception e) {
 				getLogger().log(Level.WARNING, "Error creating user by personal ID: " + personalId, e);
 			}
