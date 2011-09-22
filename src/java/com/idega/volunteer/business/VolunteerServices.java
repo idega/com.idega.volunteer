@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
@@ -176,7 +177,7 @@ public class VolunteerServices extends DefaultSpringBean implements ApplicationL
 	public Map<Locale, Map<String, String>> getVolunteerAreasOfInterest() {
 		Map<Locale, Map<String, String>> areas = new HashMap<Locale, Map<String,String>>();
 		
-		Map<String, String> localizedAreas = new HashMap<String, String>();
+		Map<String, String> localizedAreas = new LinkedHashMap<String, String>();
 		areas.put(getCurrentLocale(), localizedAreas);
 		
 		IWResourceBundle iwrb = getResourceBundle(getBundle(VolunteerConstants.IW_BUNDLE_IDENTIFIER));
@@ -192,6 +193,37 @@ public class VolunteerServices extends DefaultSpringBean implements ApplicationL
 		localizedAreas.put("association_mission", iwrb.getLocalizedString("association_mission", "Association mission"));
 		localizedAreas.put("computer_it_help", iwrb.getLocalizedString("computer_it_help", "Computer/IT Help"));
 		localizedAreas.put("other", iwrb.getLocalizedString("other", "Other"));
+		
+		return areas;
+	}
+	
+	public Map<Locale, Map<String, String>> getVolunteerAssignmentAreas() {
+		Map<Locale, Map<String, String>> areas = new HashMap<Locale, Map<String,String>>();
+		
+		Map<String, String> localizedAreas = new LinkedHashMap<String, String>();
+		areas.put(getCurrentLocale(), localizedAreas);
+		
+		localizedAreas.put("bankeryd", "Bankeryd");
+		localizedAreas.put("barnarp", "Barnarp");
+		localizedAreas.put("bottnaryd", "Bottnaryd");
+		localizedAreas.put("granna", "Gränna");
+		localizedAreas.put("hovslatt", "Hovslätt");
+		localizedAreas.put("huskvarna", "Huskvarna");
+		localizedAreas.put("jonkoping_soder", "Jönköping söder");
+		localizedAreas.put("jonkoping_oster", "Jönköping öster");
+		localizedAreas.put("jonkoping_vaster", "Jönköping väster");
+		localizedAreas.put("jonkoping_centrum", "Jönköping centrum");
+		localizedAreas.put("kaxholmen", "Kaxholmen");
+		localizedAreas.put("lekeryd", "Lekeryd");
+		localizedAreas.put("mansarp", "Månsarp");
+		localizedAreas.put("norrahammar", "Norrahammar");
+		localizedAreas.put("skarstad", "Skärstad");
+		localizedAreas.put("taberg", "Taberg");
+		localizedAreas.put("tenhult", "Tenhult");
+		localizedAreas.put("visingso", "Visingsö");
+		localizedAreas.put("olmstad", "Ölmstad");
+		localizedAreas.put("oxnehaga", "Öxnehaga");
+		localizedAreas.put("hela_kommunen", "Hela kommunen");
 		
 		return areas;
 	}

@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.idega.core.business.DefaultSpringBean;
 import com.idega.user.business.UserBusiness;
+import com.idega.user.data.User;
+import com.idega.util.expression.ELUtil;
+import com.idega.volunteer.VolunteerConstants;
 
 @Service("volunteerAssignmentHandler")
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -21,11 +24,27 @@ public class VolunteerAssignmentHandler extends DefaultSpringBean implements Act
 	private Long processInstanceId;
 	
 	public void execute(ExecutionContext executionContext) throws Exception {
+		subscribeToTheCase(executionContext);
+		
+		
 		Object assignedVolunteers = executionContext.getVariable("list_volunteerAssignmentVolunteers");
 		sendNotifications(assignedVolunteers);
 		
 		Object proposedVolunteers = executionContext.getVariable("list_volunteerAssignmentProposedVolunteers");
 		sendNotifications(proposedVolunteers);
+	}
+	
+	private void subscribeToTheCase(ExecutionContext context) {
+		User volunteerOrganization = getCurrentUser();
+		if (volunteerOrganization == null || !getApplication().getAccessController().hasRole(volunteerOrganization, VolunteerConstants.ROLE_VOLUNTEER_ORGANIZATION))
+			return;
+		
+		try {
+			VolunteerAccountHandler volunteerHandler = ELUtil.getInstance().getBean(VolunteerAccountHandler.BEAN_NAME);
+			volunteerHandler.subscribeToTheCase(volunteerOrganization, getProcessInstanceId());
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error subscribing user " + volunteerOrganization + " the the case based on BPM process: " + getProcessInstanceId(), e);
+		}
 	}
 	
 	private void sendNotifications(Object volunteers) {

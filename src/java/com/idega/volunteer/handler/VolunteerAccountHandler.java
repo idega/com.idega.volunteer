@@ -34,11 +34,13 @@ import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
 import com.idega.util.expression.ELUtil;
 
-@Service("volunteerAccountHandler")
 @Scope(BeanDefinition.SCOPE_SINGLETON)
+@Service(VolunteerAccountHandler.BEAN_NAME)
 public class VolunteerAccountHandler extends DefaultSpringBean implements ActionHandler {
 
 	private static final long serialVersionUID = 8670482203630603777L;
+
+	static final String BEAN_NAME = "volunteerAccountHandler";
 	
 	private Long processInstanceId;
 	
@@ -109,7 +111,7 @@ public class VolunteerAccountHandler extends DefaultSpringBean implements Action
 		}
 		
 		try {
-			subscribeOrUnsubscribe(user, true);
+			subscribeOrUnsubscribe(user, true, getProcessInstanceId());
 		} catch (RemoteException e) {
 		} catch (FinderException e) {}
 		
@@ -117,8 +119,12 @@ public class VolunteerAccountHandler extends DefaultSpringBean implements Action
 		volunteerHandler.enableOrDisableLogin(user, false);
 	}
 	
-	private void subscribeOrUnsubscribe(User user, boolean subscribe) throws RemoteException, FinderException {
-		CaseProcInstBind caseProcBind = getCasesDAO().getCaseProcInstBindByProcessInstanceId(getProcessInstanceId());
+	public void subscribeToTheCase(User user, Long proccessInstanceId) throws Exception {
+		subscribeOrUnsubscribe(user, true, proccessInstanceId);
+	}
+	
+	private void subscribeOrUnsubscribe(User user, boolean subscribe, Long processInstanceId) throws RemoteException, FinderException {
+		CaseProcInstBind caseProcBind = getCasesDAO().getCaseProcInstBindByProcessInstanceId(processInstanceId);
 		CaseBusiness caseBusiness = getServiceInstance(CasesBusiness.class);
 		Case theCase = caseBusiness.getCase(caseProcBind.getCaseId());
 		Collection<User> subscribers = theCase.getSubscribers();
@@ -269,7 +275,7 @@ public class VolunteerAccountHandler extends DefaultSpringBean implements Action
 			throw new RuntimeException("User can not be found by personal ID: " + getPersonalId(context));
 		
 		try {
-			subscribeOrUnsubscribe(user, false);
+			subscribeOrUnsubscribe(user, false, getProcessInstanceId());
 		} catch (RemoteException e) {
 		} catch (FinderException e) {
 		}

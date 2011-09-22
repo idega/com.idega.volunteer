@@ -14,13 +14,9 @@
   <node name="additionalInformationEnd" x="516" y="460" width="21" height="26"/>
   <node name="end" x="970" y="176" width="24" height="25"/>
   <node name="emailsFetcherEnd" x="755" y="65" width="23" height="23"/>
-  <node name="informAssignedVolunteerOrganizationEnd" x="52" y="388" width="223" height="36"/>
   <node name="informFork" x="511" y="304" width="24" height="21">
     <edge>
       <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="-104" y="-12"/>
     </edge>
   </node>
   <node name="endCaseProcess" x="767" y="111" width="140" height="40">
@@ -45,6 +41,9 @@
     </edge>
     <edge>
       <label x="-78" y="-14"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
     </edge>
   </node>
   <node name="completeProcess" x="586" y="106" width="149" height="46">
@@ -81,11 +80,6 @@
       <label x="5" y="-10"/>
     </edge>
   </node>
-  <node name="informAssignedVolunteerOrganization" x="69" y="301" width="196" height="36">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-  </node>
   <node name="editVolunteerAssignment" x="812" y="281" width="161" height="36">
     <edge>
       <label x="5" y="-10"/>
@@ -106,6 +100,8 @@
     <edge>
       <label x="5" y="-10"/>
     </edge>
+  </node>
+  <node name="subscribeToTheCase" x="364" y="-34" width="132" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>

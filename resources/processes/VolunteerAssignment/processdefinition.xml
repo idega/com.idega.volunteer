@@ -78,7 +78,7 @@
          <controller>
             <variable name="string_caseDescription" 							access="write,required"></variable>
             <variable name="string_volunteerAssignmentCreator" 					access="write,required"></variable>
-            <variable name="string_volunteerAssignmentArea" 					access="write,required"></variable>
+            <variable name="list_volunteerAssignmentArea" 					access="write,required"></variable>
             <variable name="date_volunteerAssignmentDate" 						access="write"></variable>
             <variable name="date_volunteerAssignmentCreationDate" 				access="write,required"></variable>
             <variable name="date_volunteerAssignmentExpireDate" 				access="write,required"></variable>
@@ -149,8 +149,6 @@
    </end-state>
 
 	<end-state name="emailsFetcherEnd"></end-state>
-
-	<end-state name="informAssignedVolunteerOrganizationEnd"></end-state>
 
 	<event type="handlerAssignedToCase">
         <action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
@@ -243,7 +241,6 @@
     </event>
    <fork name="informFork">
       <transition to="informVolunteers" name="toInformVolunteers"></transition>
-		<transition to="informAssignedVolunteerOrganization" name="toInformAssignedVolunteerOrganization"></transition>
    </fork>
    <node name="endCaseProcess">
       <event type="node-leave">
@@ -282,6 +279,7 @@
    <fork name="fork3">
 		<transition name="toEmailsFetcher" to="emailsFetcher"></transition>
       <transition to="handlerAssignsOwner" name="toHandlerAssignsOwner"></transition>
+		<transition to="subscribeToTheCase" name="to subscribeToTheCase"></transition>
    </fork>
    <task-node name="completeProcess">
 		<task name="Complete process">
@@ -456,10 +454,6 @@
 		<transition to="additionalInformationEnd"></transition>
 	</node>
 
-	<node name="informAssignedVolunteerOrganization">
-		<transition to="informAssignedVolunteerOrganizationEnd"></transition>
-	</node>
-
 	<task-node name="editVolunteerAssignment">
 		<task name="Edit volunteer assignment" priority="-1">
 			<assignment class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
@@ -479,7 +473,7 @@
 	         <controller>
 	            <variable name="string_caseDescription" 							access="read,write,required"></variable>
 	            <variable name="string_volunteerAssignmentCreator" 					access="read,write,required"></variable>
-	            <variable name="string_volunteerAssignmentArea" 					access="read,write,required"></variable>
+	            <variable name="list_volunteerAssignmentArea" 						access="read,write,required"></variable>
 	            <variable name="date_volunteerAssignmentDate" 						access="read,write"></variable>
 	            <variable name="date_volunteerAssignmentCreationDate" 				access="read,write,required"></variable>
 	            <variable name="date_volunteerAssignmentExpireDate" 				access="read,write,required"></variable>
@@ -526,7 +520,7 @@
 	         <controller>
 	            <variable name="string_caseDescription" 							access="read,write,required"></variable>
 	            <variable name="string_volunteerAssignmentCreator" 					access="read,write,required"></variable>
-	            <variable name="string_volunteerAssignmentArea" 					access="read,write,required"></variable>
+	            <variable name="list_volunteerAssignmentArea" 					access="read,write,required"></variable>
 	            <variable name="date_volunteerAssignmentDate" 						access="read,write"></variable>
 	            <variable name="date_volunteerAssignmentCreationDate" 				access="read,write,required"></variable>
 	            <variable name="date_volunteerAssignmentExpireDate" 				access="read,write,required"></variable>
@@ -547,6 +541,19 @@
          </task>
 		<transition to="informFork"></transition>
 	</task-node>
+
+	<node name="subscribeToTheCase">
+		<action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
+			<handlerName>volunteerAssignmentHandler</handlerName>
+			<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
+				<entry>
+			    	<key>processInstanceId</key>
+			       	<value>#{mainProcessInstanceId}</value>
+                </entry>
+            </propertyMap>
+         </action>
+		<transition to="emailsFetcherEnd"></transition>
+	</node>
 	
 	<idg:roles xmlns:idg="http://idega.com/bpm">
         <role name="bpm_volunteer_assignment_caseHandler">
