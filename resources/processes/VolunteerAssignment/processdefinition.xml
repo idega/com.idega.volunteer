@@ -80,7 +80,7 @@
          <controller>
             <variable name="string_caseDescription" 							access="write,required"></variable>
             <variable name="string_volunteerAssignmentCreator" 					access="write,required"></variable>
-            <variable name="list_volunteerAssignmentArea" 					access="write,required"></variable>
+            <variable name="list_volunteerAssignmentArea" 						access="write,required"></variable>
             <variable name="date_volunteerAssignmentDate" 						access="write"></variable>
             <variable name="date_volunteerAssignmentCreationDate" 				access="write,required"></variable>
             <variable name="date_volunteerAssignmentExpireDate" 				access="write,required"></variable>
