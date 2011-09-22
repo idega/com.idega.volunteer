@@ -87,7 +87,6 @@
 			<variable name="string_volunteerAccountEmail2"				access="write"></variable>
 			<variable name="string_volunteerAccountTelephone2"			access="write"></variable>
 			<variable name="string_volunteerAccountVoluneerTime"		access="write"></variable>
-			<variable name="list_volunteerAccountOtherLanguages"		access="write"></variable>
 			<variable name="list_volunteerAccountAreaOfInterests"		access="write"></variable>
 			<variable name="string_volunteerAccountRegistered"			access="write"></variable>
 			<variable name="string_volunteerAccountDrivingLicense"		access="write"></variable>
@@ -95,6 +94,8 @@
 			<variable name="list_volunteerAccountLanguageSkills"		access="write"></variable>
 			<variable name="string_volunteerAccountGender"				access="write,required"></variable>
 			<variable name="string_volunteerAccountRegistrationDate"	access="write,required"></variable>
+			<variable name="string_volunteerAccountAvailable"			access="write,required"></variable>
+			<variable name="string_volunteerAccountAgreedToTheTerms"	access="write,required"></variable>
          </controller>
       </task>
       <transition to="fork3"></transition>
@@ -477,7 +478,6 @@
 				<variable name="string_volunteerAccountEmail2"				access="read,write"></variable>
 				<variable name="string_volunteerAccountTelephone2"			access="read,write"></variable>
 				<variable name="string_volunteerAccountVoluneerTime"		access="read,write"></variable>
-				<variable name="list_volunteerAccountOtherLanguages"		access="read,write"></variable>
 				<variable name="list_volunteerAccountAreaOfInterests"		access="read,write"></variable>
 				<variable name="string_volunteerAccountRegistered"			access="read,write"></variable>
 				<variable name="string_volunteerAccountDrivingLicense"		access="read,write"></variable>
@@ -485,6 +485,8 @@
 				<variable name="list_volunteerAccountLanguageSkills"		access="read,write"></variable>
 				<variable name="string_volunteerAccountGender"				access="read,write,required"></variable>
 				<variable name="string_volunteerAccountRegistrationDate"	access="read,write,required"></variable>
+				<variable name="string_volunteerAccountAvailable"			access="read,write,required"></variable>
+				<variable name="string_volunteerAccountAgreedToTheTerms"	access="write,required"></variable>
 	         </controller>
 		</task>
 		<transition to="enableOrDisableVolunteerAccount"></transition>

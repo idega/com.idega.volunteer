@@ -6,7 +6,7 @@ org_type.management=F\u00F6rvaltning
 org_type.eterprise=F\u00F6retag
 org_type.association=F\u00F6rening
 
-registration_successfull=Registrering framg\u00E5ngsrika
+registration_successfull=Registering lyckad
 account_created_message=Hej, {0}. \n\nDin registrering var framg\u00E5ngsrik. Du kan logga in med ditt inloggningsnamn {1} och l\u00F6senord {2} genom att g\u00E5 till {3}
 account_is_disabled=Account is disabled
 account_disabled_message=Hi {0}, \n\nYour account at {1} is currently disabled.

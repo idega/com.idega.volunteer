@@ -170,8 +170,9 @@ public class VolunteerServices extends DefaultSpringBean implements ApplicationL
 	}
 	
 	public String getCurrentDate() {
-		IWTimestamp date = IWTimestamp.RightNow();
-		return date.getLocaleDate(getCurrentLocale());
+		IWTimestamp date = new IWTimestamp(System.currentTimeMillis());
+		String dateString = date.getDateString("yyyy-MM-dd");
+		return dateString;
 	}
 	
 	public Map<Locale, Map<String, String>> getVolunteerAreasOfInterest() {
