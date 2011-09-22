@@ -19,6 +19,7 @@ import com.idega.presentation.Block;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
 import com.idega.presentation.text.Heading3;
+import com.idega.util.CoreConstants;
 import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
 import com.idega.util.expression.ELUtil;
@@ -74,6 +75,7 @@ public class VolunteerAssignmentsViewer extends Block {
 		PublicCases publicCases = new PublicCases();
 		publicCases.setHideEmptySection(true);
 		publicCases.setCaseCodes(VolunteerConstants.CASE_TYPE_VOLUNTEER_ASSIGNMENT);
+		publicCases.setSpecialBackPage(CoreConstants.PAGES_URI_PREFIX);
 		container.add(publicCases);
 	}
 	
