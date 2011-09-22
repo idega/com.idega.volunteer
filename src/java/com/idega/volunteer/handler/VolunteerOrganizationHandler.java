@@ -442,7 +442,7 @@ public class VolunteerOrganizationHandler extends DefaultSpringBean implements A
 		}
 	}
 	
-	private void sendMail(User user, final SendMailMessageValue message) {
+	public void sendMail(User user, final SendMailMessageValue message) {
 		UserBusiness userBusiness = getServiceInstance(UserBusiness.class);
 		Email email = null;
 		try {

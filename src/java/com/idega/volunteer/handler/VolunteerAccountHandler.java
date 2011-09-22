@@ -119,14 +119,27 @@ public class VolunteerAccountHandler extends DefaultSpringBean implements Action
 		volunteerHandler.enableOrDisableLogin(user, false);
 	}
 	
+	public void unSubscribeFromTheCase(User user, Long proccessInstanceId) throws Exception {
+		subscribeOrUnsubscribe(user, false, proccessInstanceId);
+	}
+	
 	public void subscribeToTheCase(User user, Long proccessInstanceId) throws Exception {
 		subscribeOrUnsubscribe(user, true, proccessInstanceId);
 	}
 	
-	private void subscribeOrUnsubscribe(User user, boolean subscribe, Long processInstanceId) throws RemoteException, FinderException {
+	public Case getCase(Long processInstanceId) {
 		CaseProcInstBind caseProcBind = getCasesDAO().getCaseProcInstBindByProcessInstanceId(processInstanceId);
 		CaseBusiness caseBusiness = getServiceInstance(CasesBusiness.class);
-		Case theCase = caseBusiness.getCase(caseProcBind.getCaseId());
+		try {
+			return caseBusiness.getCase(caseProcBind.getCaseId());
+		} catch (Exception e) {
+			getLogger().log(Level.WARNING, "Error getting case by ID: " + caseProcBind.getCaseId(), e);
+		}
+		return null;
+	}
+	
+	private void subscribeOrUnsubscribe(User user, boolean subscribe, Long processInstanceId) throws RemoteException, FinderException {
+		Case theCase = getCase(processInstanceId);
 		Collection<User> subscribers = theCase.getSubscribers();
 		if (subscribe) {
 			try {

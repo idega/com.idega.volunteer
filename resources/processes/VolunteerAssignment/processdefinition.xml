@@ -445,7 +445,7 @@
 
 	<node name="informVolunteers">
 		<action class="com.idega.jbpm.proxy.JbpmHandlerProxy"> 
-			<handlerName>volunteerAssignmentHandler</handlerName>
+			<handlerName>volunteerMatchingHandler</handlerName>
 			<propertyMap key-type='java.lang.String' value-type='java.lang.String'>
 				<entry>
 			    	<key>processInstanceId</key>

@@ -37,3 +37,8 @@ skarstad=Sk\u00E4rstad
 visingso=Visings\u00F6
 olmstad=\u00D6lmstad
 oxnehaga=\u00D6xnehaga
+
+you_were_assigned_to_mission=Du har tilldelats ett frivilliguppdrag
+assignment_to_mission_message=Hej {0}, \n\nDu har tilldelats ett nytt frivilliguppdrag. Uppdrag nummer: {1}. Du kan l\u00E4sa mer om detaljerna i ippdraget p\u00E5: {2}.
+you_were_unassigned_from_mission=Du har avbokats fr\u00E5n uppdraget
+unassignment_from_mission_message=Hej {0}, \n\nDu har nu avbokats fr\u00E5n uppdrag med nummer\: {1}.

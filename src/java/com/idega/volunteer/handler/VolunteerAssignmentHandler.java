@@ -1,6 +1,5 @@
 package com.idega.volunteer.handler;
 
-import java.util.Collection;
 import java.util.logging.Level;
 
 import org.jbpm.graph.def.ActionHandler;
@@ -10,7 +9,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.idega.core.business.DefaultSpringBean;
-import com.idega.user.business.UserBusiness;
 import com.idega.user.data.User;
 import com.idega.util.expression.ELUtil;
 import com.idega.volunteer.VolunteerConstants;
@@ -25,13 +23,6 @@ public class VolunteerAssignmentHandler extends DefaultSpringBean implements Act
 	
 	public void execute(ExecutionContext executionContext) throws Exception {
 		subscribeToTheCase(executionContext);
-		
-		
-		Object assignedVolunteers = executionContext.getVariable("list_volunteerAssignmentVolunteers");
-		sendNotifications(assignedVolunteers);
-		
-		Object proposedVolunteers = executionContext.getVariable("list_volunteerAssignmentProposedVolunteers");
-		sendNotifications(proposedVolunteers);
 	}
 	
 	private void subscribeToTheCase(ExecutionContext context) {
@@ -47,24 +38,6 @@ public class VolunteerAssignmentHandler extends DefaultSpringBean implements Act
 		}
 	}
 	
-	private void sendNotifications(Object volunteers) {
-		if (!(volunteers instanceof Collection<?>))
-			return;
-		
-		UserBusiness userBusiness = getServiceInstance(UserBusiness.class);
-		
-		try {
-			Thread sender = new Thread(new Runnable() {
-				public void run() {
-	//				SendMail.send(from, to, cc, bcc, replyTo, host, subject, text);
-				}
-			});
-			sender.start();
-		} catch (Exception e) {
-			getLogger().log(Level.WARNING, "Errr sending notification mail", e);
-		}
-	}
-
 	public Long getProcessInstanceId() {
 		return processInstanceId;
 	}
