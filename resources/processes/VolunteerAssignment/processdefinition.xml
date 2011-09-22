@@ -523,7 +523,7 @@
 	         <controller>
 	            <variable name="string_caseDescription" 							access="read,write,required"></variable>
 	            <variable name="string_volunteerAssignmentCreator" 					access="read,write,required"></variable>
-	            <variable name="list_volunteerAssignmentArea" 					access="read,write,required"></variable>
+	            <variable name="list_volunteerAssignmentArea" 						access="read,write,required"></variable>
 	            <variable name="date_volunteerAssignmentDate" 						access="read,write"></variable>
 	            <variable name="date_volunteerAssignmentCreationDate" 				access="read,write,required"></variable>
 	            <variable name="date_volunteerAssignmentExpireDate" 				access="read,write,required"></variable>

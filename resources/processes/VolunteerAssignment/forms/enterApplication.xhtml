@@ -371,7 +371,8 @@
                 <idega:dispatch name="idega-xforms-ready" target="//h:body//*[starts-with(@id, 'fbc_')]"/>
                 <xf:setvalue model="data_model" ref="instance('localized_strings')/current_language" value="instance('locale-instance')/fb-afk-loginSession.currentLocale"/>
                 <xf:setvalue if="instance('control-instance')/generatePdf='true'" model="submission_model" ref="instance('control-instance')/required" value="'false'"/>
-                <xf:setvalue model="submission_model" ref="instance('data-instance')/Process_is_public_fbc_90" value="'true'" /> 
+                <xf:setvalue model="submission_model" ref="instance('data-instance')/Process_is_public_fbc_90" value="'true'" />
+                <xf:setvalue model="submission_model" ref="instance('data-instance')/Publiceringsdatum_fbc_58" value="idega:resolveBean('volunteerServices.currentDate')"/>
             </xf:action>
             
             <xf:instance id="fbc_80_lds" xmlns="">

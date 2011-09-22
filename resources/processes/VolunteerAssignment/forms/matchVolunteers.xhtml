@@ -114,21 +114,11 @@
             <xf:bind id="fbc_67_bind" nodeset="Telefonnummer_1_fbc_67"
                 readonly="instance('control-instance')/readonly = 'true'"
                 required="instance('control-instance')/required = 'true'" type="xs:string"/>
-            <xf:instance id="fbc_51_autofill-instance"
-                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.name"/>
-            <xf:instance id="fbc_65_autofill-instance"
-                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.name"/>
-            <xf:instance id="fbc_67_autofill-instance"
-                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.phones.number"/>
             <xf:bind id="fbc_68_bind" nodeset="Telefonnummer_2_fbc_68"
                 readonly="instance('control-instance')/readonly = 'true'" type="xs:string"/>
-            <xf:instance id="fbc_68_autofill-instance"
-                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.phones.number"/>
             <xf:bind id="fbc_69_bind" nodeset="Epost_fbc_69"
                 readonly="instance('control-instance')/readonly = 'true'"
                 required="instance('control-instance')/required = 'true'" type="xs:string"/>
-            <xf:instance id="fbc_69_autofill-instance"
-                relevant="false()" src="context:fb-afk-collection-string-loginSession.user.emails.emailAddress"/>
             <xf:bind id="fbc_73_bind" nodeset="Antal_frivilliga_fbc_73"
                 readonly="instance('control-instance')/readonly = 'true'"
                 required="instance('control-instance')/required = 'true'" type="xs:string"/>
@@ -478,26 +468,6 @@
                 </xs:restriction>
             </xs:simpleType>
         </xs:schema>
-        <xf:model id="x-autofill-model">
-            <xf:action ev:event="xforms-ready">
-            	<xf:setvalue bind="fbc_51_bind"
-                    id="fbc_51-autofill-setvalue"
-                    model="submission_model" value="instance('fbc_51_autofill-instance')/fb-afk-collection-string-loginSession.user.name"/>
-                <xf:setvalue bind="fbc_65_bind"
-                    id="fbc_65-autofill-setvalue"
-                    model="submission_model" value="instance('fbc_65_autofill-instance')/fb-afk-collection-string-loginSession.user.name"/>
-                <xf:setvalue bind="fbc_67_bind"
-                    id="fbc_67-autofill-setvalue"
-                    model="submission_model" value="instance('fbc_67_autofill-instance')/fb-afk-collection-string-loginSession.user.phones.number"/>
-                <xf:setvalue bind="fbc_68_bind"
-                    id="fbc_68-autofill-setvalue"
-                    model="submission_model" value="instance('fbc_68_autofill-instance')/fb-afk-collection-string-loginSession.user.phones.number"/>
-                <xf:setvalue bind="fbc_69_bind"
-                    id="fbc_69-autofill-setvalue"
-                    model="submission_model" value="instance('fbc_69_autofill-instance')/fb-afk-collection-string-loginSession.user.emails.emailAddress"/>
-
-            </xf:action>
-        </xf:model>
     </head>
     <body>
         <xf:group appearance="full">
