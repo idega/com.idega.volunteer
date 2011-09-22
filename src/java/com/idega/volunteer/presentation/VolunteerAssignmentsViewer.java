@@ -1,7 +1,7 @@
 package com.idega.volunteer.presentation;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
+import is.idega.idegaweb.egov.cases.presentation.PublicCases;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -12,7 +12,6 @@ import com.idega.builder.business.BuilderLogic;
 import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.jbpm.bean.VariableInstanceInfo;
-import com.idega.jbpm.data.ProcessManagerBind;
 import com.idega.jbpm.data.VariableInstanceQuerier;
 import com.idega.jbpm.data.dao.BPMDAO;
 import com.idega.jbpm.identity.BPMUser;
@@ -20,12 +19,8 @@ import com.idega.presentation.Block;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Layer;
 import com.idega.presentation.text.Heading3;
-import com.idega.presentation.text.Link;
-import com.idega.presentation.text.Lists;
-import com.idega.util.IWTimestamp;
 import com.idega.util.ListUtil;
 import com.idega.util.StringUtil;
-import com.idega.util.URIUtil;
 import com.idega.util.expression.ELUtil;
 import com.idega.volunteer.VolunteerConstants;
 
@@ -76,29 +71,10 @@ public class VolunteerAssignmentsViewer extends Block {
 		
 		container.add(new Heading3(iwrb.getLocalizedString("volunteer_assignments", "Assignments for volunteers").concat(":")));
 		
-		Lists lists = new Lists();
-		container.add(lists);
-		Timestamp now = IWTimestamp.getTimestampRightNow();
-		for (VariableInstanceInfo var: vars) {
-			Long piId = var.getProcessInstanceId();
-			if (piId == null)
-				continue;
-			
-			Serializable value = var.getValue();
-			if (value instanceof Timestamp && now.after((Timestamp) value))
-				continue;
-			
-			Collection<VariableInstanceInfo> names = querier.getVariablesByProcessInstanceIdAndVariablesNames(Arrays.asList("string_caseDescription"), Arrays.asList(piId), false,
-					false, false);
-			if (ListUtil.isEmpty(names))
-				continue;
-			
-			Link link = new Link(names.iterator().next().getValue().toString());
-			URIUtil uri = new URIUtil(pageUri);
-			uri.setParameter(ProcessManagerBind.processInstanceIdParam, String.valueOf(piId));
-			link.setURL(uri.getUri());
-			lists.add(link);
-		}
+		PublicCases publicCases = new PublicCases();
+		publicCases.setHideEmptySection(true);
+		publicCases.setCaseCodes(VolunteerConstants.CASE_TYPE_VOLUNTEER_ASSIGNMENT);
+		container.add(publicCases);
 	}
 	
 }
