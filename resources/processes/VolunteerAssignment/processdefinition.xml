@@ -51,6 +51,7 @@
                             {rightsAssignment: {roles: {role: [
                                 {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [modifyPermissions, caseHandler]}},
                                 {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [seeContacts]}, rolesContacts: {string: ["all"]}},
+                                {roleName: "everyone", accesses: {access: [read]}},
                                 {roleName: "volunteer_organization", accesses: {access: [seeContacts]}, rolesContacts: {string: ["bpm_volunteer_assignment_caseHandler"]}}
                             ]} }}
                         </value>
@@ -69,6 +70,7 @@
 				             {taskAssignment: {roles: {role: [
 				                   {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read]}},
 				                   {roleName: "volunteer_organization", accesses: {access: [read, write]}, assignIdentities: {string: ["current_user"]}},
+				                   {roleName: "everyone", accesses: {access: [read]}},
 				                   {roleName: "bpm_volunteer_assignment_invited", accesses: {access: [read]}}
 		               		 ]} }}
 			            </value>
@@ -464,6 +466,7 @@
 					             {taskAssignment: {roles: {role: [
 					                   {roleName: "bpm_volunteer_assignment_handler", accesses: {access: [read, write]}},
 					                   {roleName: "volunteer_organization", accesses: {access: [read, write]}, assignIdentities: {string: ["current_user"]}},
+					                   {roleName: "everyone", accesses: {access: [read]}},
 					                   {roleName: "bpm_volunteer_assignment_invited", accesses: {access: [read]}}
 			               		 ]} }}
 				            </value>
