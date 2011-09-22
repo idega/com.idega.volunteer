@@ -7,6 +7,9 @@
         <title>
             <xf:output model="data_model" ref="instance('localized_strings')/form-title[@lang=instance('localized_strings')/current_language]"/>
         </title>
+        
+        <script type="text/javascript" src="/idegaweb/bundles/com.idega.volunteer.bundle/resources/javascript/matchVolunteersHelper.js"></script>
+        
         <xf:model id="submission_model" schema="#fb-schema">
             <xf:instance id="data-instance" xmlns="">
                 <data>
@@ -377,7 +380,9 @@
                 <idega:dispatch name="idega-xforms-ready" target="//h:body//*[starts-with(@id, 'fbc_')]"/>
                 <xf:setvalue model="data_model" ref="instance('localized_strings')/current_language" value="instance('locale-instance')/fb-afk-loginSession.currentLocale"/>
                 <xf:setvalue if="instance('control-instance')/generatePdf='true'" model="submission_model" ref="instance('control-instance')/required" value="'false'"/>
-                <xf:setvalue model="submission_model" ref="instance('data-instance')/Process_is_public_fbc_90" value="'true'" /> 
+                <xf:setvalue model="submission_model" ref="instance('data-instance')/Process_is_public_fbc_90" value="'true'" />
+           <!-- <idega:setvalue ref="instance('fbc_37_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item" value="idega:resolveExpression('violationService.getHarbours()')"/> -->
+                <idega:setvalue ref="instance('fbc_82_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item" value="idega:resolveExpression('volunteerServices.getSuggestedVolunteers({0})', '#{instance(`data-instance`)/Uppdragstyp_fbc_80}')" />
             </xf:action>
             
             <xf:instance id="fbc_80_lds" xmlns="">
@@ -402,9 +407,19 @@
             </xf:instance>
             
             <xf:instance id="fbc_82_lds" xmlns="">
-                <local_src />
+                <local_src>
+                    <localizedEntries lang="en">
+                        <item/>
+                    </localizedEntries>
+                    <localizedEntries lang="is_IS">
+                        <item/>
+                    </localizedEntries>
+                    <localizedEntries lang="sv_SE">
+                        <item/>
+                    </localizedEntries>
+                </local_src>
             </xf:instance>
-            <xf:instance id="fbc_82_eds" xmlns="" src="expXml:volunteerServices.suggestedVolunteers">
+            <xf:instance id="fbc_82_eds" xmlns="">
                 <ext_src/>
             </xf:instance>
             
@@ -660,10 +675,9 @@
                                 <xf:output ref="instance('localized_strings')/fbc_81-help[@lang=instance('localized_strings')/current_language]"/>
                             </xf:help>
                         </xf:select>
-                        <xf:select appearance="minimal"
-                            bind="fbc_82_bind" id="fbc_82" type="fbc_multiple_select_minimal">
+                        <xf:select appearance="minimal" bind="fbc_82_bind" id="fbc_82" type="fbc_multiple_select_minimal" class="proposedVolunteers">
                             <xf:label model="data_model" ref="instance('localized_strings')/fbc_82-label[@lang=instance('localized_strings')/current_language]"/>
-                            <xf:itemset model="data_model" nodeset="instance('fbc_82_eds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                            <xf:itemset model="data_model" nodeset="instance('fbc_82_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
                                 <xf:label ref="itemLabel"/>
                                 <xf:value ref="itemValue"/>
                             </xf:itemset>
