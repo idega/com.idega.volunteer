@@ -203,26 +203,28 @@ public class VolunteerServices extends DefaultSpringBean implements ApplicationL
 		Map<String, String> localizedAreas = new LinkedHashMap<String, String>();
 		areas.put(getCurrentLocale(), localizedAreas);
 		
+		IWResourceBundle iwrb = getResourceBundle(getBundle(VolunteerConstants.IW_BUNDLE_IDENTIFIER));
+		
 		localizedAreas.put("bankeryd", "Bankeryd");
 		localizedAreas.put("barnarp", "Barnarp");
 		localizedAreas.put("bottnaryd", "Bottnaryd");
-		localizedAreas.put("granna", "Gränna");
-		localizedAreas.put("hovslatt", "Hovslätt");
+		localizedAreas.put("granna", iwrb.getLocalizedString("granna", "Gränna"));
+		localizedAreas.put("hovslatt", iwrb.getLocalizedString("hovslatt", "Hovslätt"));
 		localizedAreas.put("huskvarna", "Huskvarna");
-		localizedAreas.put("jonkoping_soder", "Jönköping söder");
-		localizedAreas.put("jonkoping_oster", "Jönköping öster");
-		localizedAreas.put("jonkoping_vaster", "Jönköping väster");
-		localizedAreas.put("jonkoping_centrum", "Jönköping centrum");
+		localizedAreas.put("jonkoping_soder", iwrb.getLocalizedString("jonkoping_soder", "Jönköping söder"));
+		localizedAreas.put("jonkoping_oster", iwrb.getLocalizedString("jonkoping_oster", "Jönköping öster"));
+		localizedAreas.put("jonkoping_vaster", iwrb.getLocalizedString("jonkoping_vaster", "Jönköping väster"));
+		localizedAreas.put("jonkoping_centrum", iwrb.getLocalizedString("jonkoping_centrum", "Jönköping centrum"));
 		localizedAreas.put("kaxholmen", "Kaxholmen");
 		localizedAreas.put("lekeryd", "Lekeryd");
-		localizedAreas.put("mansarp", "Månsarp");
+		localizedAreas.put("mansarp", iwrb.getLocalizedString("mansarp", "Månsarp"));
 		localizedAreas.put("norrahammar", "Norrahammar");
-		localizedAreas.put("skarstad", "Skärstad");
+		localizedAreas.put("skarstad", iwrb.getLocalizedString("skarstad", "Skärstad"));
 		localizedAreas.put("taberg", "Taberg");
 		localizedAreas.put("tenhult", "Tenhult");
-		localizedAreas.put("visingso", "Visingsö");
-		localizedAreas.put("olmstad", "Ölmstad");
-		localizedAreas.put("oxnehaga", "Öxnehaga");
+		localizedAreas.put("visingso", iwrb.getLocalizedString("visingso", "Visingsö"));
+		localizedAreas.put("olmstad", iwrb.getLocalizedString("olmstad", "Ölmstad"));
+		localizedAreas.put("oxnehaga", iwrb.getLocalizedString("oxnehaga", "Öxnehaga"));
 		localizedAreas.put("hela_kommunen", "Hela kommunen");
 		
 		return areas;
