@@ -5,15 +5,12 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
-
-import javax.ejb.FinderException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -50,50 +47,27 @@ public class VolunteerServices extends DefaultSpringBean implements ApplicationL
 	@Autowired
 	private BPMDAO bpmDAO;
 	
-	public Map<Locale, Map<String, String>> getVolunteers() {
-		Map<Locale, Map<String, String>> allVolunteers = new HashMap<Locale, Map<String,String>>();
-		
-		Map<String, String> volunteers = new HashMap<String, String>();
-		allVolunteers.put(getCurrentLocale(), volunteers);
-		
-		Collection<User> volunteerUsers = getAllVolunteers();
-		if (ListUtil.isEmpty(volunteerUsers))
-			return allVolunteers;
-		
-		for (User volunteer: volunteerUsers) {
-			volunteers.put(volunteer.getId(), volunteer.getName());
-		}
-		
-		return allVolunteers;
-	}
-	
-	private Collection<User> getAllVolunteers() {
-		Collection<User> volunteers = null;
-		try {
-			GroupBusiness groupBusiness = getServiceInstance(GroupBusiness.class);
-			@SuppressWarnings("unchecked")
-			Collection<Group> volunteersGroups = groupBusiness.getGroupsByGroupName(VolunteerConstants.GROUP_VOLUNTEERS);
-			if (ListUtil.isEmpty(volunteersGroups))
-				return Collections.emptyList();
-			
-			volunteers = new ArrayList<User>();
-			for (Group group: volunteersGroups) {
-				@SuppressWarnings("unchecked")
-				Collection<User> users = groupBusiness.getUsers(group);
-				if (ListUtil.isEmpty(users))
-					continue;
-				
-				for (User user: users) {
-					volunteers.add(user);
-				}
-			}
+	public List<Item> getSelectedVolunteers(String ids) {
+		List<Item> volunteers = new ArrayList<Item>();
+		if (StringUtil.isEmpty(ids))
 			return volunteers;
-		} catch (FinderException e) {
-			getLogger().warning("There are no registered volunteers");
-		} catch (RemoteException e) {
-			getLogger().log(Level.WARNING, "Error getting volunteers", e);
+		
+		List<String> usersIds = Arrays.asList(ids.split(CoreConstants.SPACE));
+		if (StringUtil.isEmpty(ids))
+			return volunteers;
+		
+		UserBusiness userBusiness = getServiceInstance(UserBusiness.class);
+		for (String id: usersIds) {
+			User user = null;
+			try {
+				user = userBusiness.getUser(Integer.valueOf(id));
+				volunteers.add(new Item(user.getId(), user.getName()));
+			} catch (Exception e) {
+				getLogger().log(Level.WARNING, "Error getting user by ID: " + id, e);
+			}
 		}
-		return Collections.emptyList();
+		
+		return volunteers;
 	}
 	
 	public List<Item> getSuggestedVolunteers(String types) {

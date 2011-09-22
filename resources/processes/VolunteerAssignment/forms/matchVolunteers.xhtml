@@ -381,8 +381,8 @@
                 <xf:setvalue model="data_model" ref="instance('localized_strings')/current_language" value="instance('locale-instance')/fb-afk-loginSession.currentLocale"/>
                 <xf:setvalue if="instance('control-instance')/generatePdf='true'" model="submission_model" ref="instance('control-instance')/required" value="'false'"/>
                 <xf:setvalue model="submission_model" ref="instance('data-instance')/Process_is_public_fbc_90" value="'true'" />
-           <!-- <idega:setvalue ref="instance('fbc_37_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item" value="idega:resolveExpression('violationService.getHarbours()')"/> -->
                 <idega:setvalue ref="instance('fbc_82_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item" value="idega:resolveExpression('volunteerServices.getSuggestedVolunteers({0})', '#{instance(`data-instance`)/Uppdragstyp_fbc_80}')" />
+                <idega:setvalue ref="instance('fbc_81_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item" value="idega:resolveExpression('volunteerServices.getSelectedVolunteers({0})', '#{instance(`data-instance`)/Frivillig_fbc_81_fbc_81}')" />
             </xf:action>
             
             <xf:instance id="fbc_80_lds" xmlns="">
@@ -400,9 +400,19 @@
             </xf:instance>
             
             <xf:instance id="fbc_81_lds" xmlns="">
-                <local_src />
+                <local_src>
+                    <localizedEntries lang="en">
+                        <item/>
+                    </localizedEntries>
+                    <localizedEntries lang="is_IS">
+                        <item/>
+                    </localizedEntries>
+                    <localizedEntries lang="sv_SE">
+                        <item/>
+                    </localizedEntries>
+                </local_src>
             </xf:instance>
-            <xf:instance id="fbc_81_eds" xmlns="" src="expXml:volunteerServices.volunteers">
+            <xf:instance id="fbc_81_eds" xmlns="">
                 <ext_src/>
             </xf:instance>
             
@@ -543,17 +553,18 @@
                             </idega:validator>
                             <xf:alert ref="instance('error-instance')/error[@for='fbc_79']"/>
                         </xf:textarea>
-                        <xf:select appearance="full" bind="fbc_80_bind"
-                            id="fbc_80" type="fbc_multiple_select">
+                        <xf:select appearance="full" bind="fbc_80_bind" id="fbc_80" type="fbc_multiple_select">
                             <xf:label model="data_model" ref="instance('localized_strings')/fbc_80-label[@lang=instance('localized_strings')/current_language]"/>
                             <xf:itemset model="data_model" nodeset="instance('fbc_80_eds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
                                 <xf:label ref="itemLabel"/>
                                 <xf:value ref="itemValue"/>
                             </xf:itemset>
-                            <xf:dispatch ev:event="idega-xforms-ready"
-                                name="idega-validate" target="fbc_80"/>
-                            <xf:dispatch ev:event="xforms-value-changed"
-                                name="idega-validate" target="fbc_80"/>
+                            <xf:dispatch ev:event="idega-xforms-ready" name="idega-validate" target="fbc_80"/>
+                            <xf:dispatch ev:event="xforms-value-changed" name="idega-validate" target="fbc_80"/>
+                            <xf:action ev:event="xforms-value-changed">
+                            	<idega:setvalue ref="instance('fbc_82_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item" value="idega:resolveExpression('volunteerServices.getSuggestedVolunteers({0})', '#{instance(`data-instance`)/Uppdragstyp_fbc_80}')" />
+                            </xf:action>
+                            
                             <idega:validator ev:event="idega-validate">
                                 <idega:message errorType="required"
                                     model="data_model" value="instance('localized_strings')/fbc_80-required[@lang=instance('localized_strings')/current_language]"/>
@@ -664,10 +675,9 @@
                             </idega:validator>
                             <xf:alert ref="instance('error-instance')/error[@for='fbc_69']"/>
                         </xf:input>
-                        <xf:select appearance="minimal"
-                            bind="fbc_81_bind" id="fbc_81" type="fbc_multiple_select_minimal">
+                        <xf:select appearance="minimal" bind="fbc_81_bind" id="fbc_81" type="fbc_multiple_select_minimal" class="assignedVolunteers">
                             <xf:label model="data_model" ref="instance('localized_strings')/fbc_81-label[@lang=instance('localized_strings')/current_language]"/>
-                            <xf:itemset model="data_model" nodeset="instance('fbc_81_eds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
+                            <xf:itemset model="data_model" nodeset="instance('fbc_81_lds')/localizedEntries[@lang=instance('localized_strings')/current_language]/item">
                                 <xf:label ref="itemLabel"/>
                                 <xf:value ref="itemValue"/>
                             </xf:itemset>
